@@ -41,18 +41,6 @@
             margin: 0 auto;
         }
 
-        /* Top Status Bar */
-        .top-status {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            font-weight: 600;
-            margin-bottom: 15px;
-            padding: 0 4px;
-        }
-
         /* Dashboard Analytics Header */
         .dashboard-header {
             background: rgba(10, 16, 28, 0.85);
@@ -175,10 +163,6 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
             margin-bottom: 22px;
-        }
-
-        .full-width {
-            grid-column: span 2;
         }
 
         .empty-msg {
@@ -329,21 +313,22 @@
             cursor: pointer;
         }
 
-        /* Bottom Navbar Dock */
         .nav-dock {
             position: fixed;
+            z-index: 2;
             bottom: 18px;
             left: 50%;
             transform: translateX(-50%);
             width: 90%;
             max-width: 390px;
-            background: rgba(10, 16, 28, 0.9);
+            background: rgba(10, 16, 28, 0.92);
             backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 26px;
             padding: 10px 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
         }
@@ -353,187 +338,289 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            color: var(--text-dim);
+            color: var(--card-cyan);
             font-size: 0.65rem;
             font-weight: 700;
-            cursor: pointer;
-        }
-
-        .dock-tab.active {
-            color: var(--card-cyan);
         }
 
         .dock-icon {
             font-size: 1.2rem;
         }
+
+        .page-title {
+            margin: 4px 2px 18px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--text-main);
+            letter-spacing: 0.04em;
+        }
+
+        .page-title span {
+            color: var(--card-cyan);
+        }
+
+        @media (max-width: 360px) {
+            .add-form {
+                flex-wrap: wrap;
+            }
+
+            .add-input {
+                min-width: 100%;
+            }
+
+            .add-select {
+                flex: 1;
+            }
+        }
     </style>
 </head>
 <body>
+    <h1 class="page-title">Habit <span>Tracker</span></h1>
 
-    <!-- Header Grid Analytics -->
-    <div class="dashboard-header">
+    <section class="dashboard-header" aria-label="Daily progress">
         <div class="ring-box">
-            <svg class="ring-svg">
+            <svg class="ring-svg" viewBox="0 0 110 110" aria-hidden="true">
                 <defs>
                     <linearGradient id="cyan-green-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stop-color="#00f0ff" />
                         <stop offset="100%" stop-color="#00ff66" />
                     </linearGradient>
                 </defs>
-                <circle class="ring-bg" cx="55" cy="55" r="42" />
-                <circle class="ring-progress" id="ringProgress" cx="55" cy="55" r="42" />
+                <circle class="ring-bg" cx="55" cy="55" r="42"></circle>
+                <circle class="ring-progress" id="ringProgress" cx="55" cy="55" r="42"></circle>
             </svg>
             <div class="ring-info">
                 <div class="ring-percent" id="ringPercent">0%</div>
-                <div class="ring-label">COMPLETED<br>PULSE</div>
+                <div class="ring-label">DONE TODAY</div>
             </div>
         </div>
-
         <div class="graph-box">
-            <svg class="line-svg">
-                <path d="M0 40 Q 20 10, 40 30 T 70 15 T 100 25 T 130 5" />
+            <svg class="line-svg" viewBox="0 0 140 60" preserveAspectRatio="none" aria-hidden="true">
+                <path id="weekGraph" d=""></path>
             </svg>
-            <div class="week-days">
-                <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
-            </div>
+            <div class="week-days" id="weekDays" aria-hidden="true"></div>
         </div>
-    </div>
+    </section>
 
-    <!-- Add Habit Control -->
-    <div class="add-form">
-        <input type="text" id="habitInput" class="add-input" placeholder="New Habit Name" />
-        <select id="habitType" class="add-select">
+    <form class="add-form" id="addForm">
+        <input type="text" id="habitInput" class="add-input" maxlength="60"
+            placeholder="New Habit Name" aria-label="New habit name" required>
+        <select id="habitType" class="add-select" aria-label="Habit type">
             <option value="start">START</option>
             <option value="quit">QUIT</option>
         </select>
-        <button class="add-btn" onclick="addHabit()">+ ADD</button>
-    </div>
+        <button class="add-btn" type="submit">+ ADD</button>
+    </form>
 
-    <!-- START Section -->
-    <div class="section-header">
-        <div class="section-title-main">Active Habits</div>
-        <div class="section-title-sub title-start">START (Building)</div>
-    </div>
-    <div class="grid-container" id="startContainer"></div>
+    <section aria-labelledby="startHeading">
+        <div class="section-header">
+            <div class="section-title-main">Active Habits</div>
+            <h2 class="section-title-sub title-start" id="startHeading">START (Building)</h2>
+        </div>
+        <div class="grid-container" id="startContainer"></div>
+    </section>
 
-    <!-- QUIT Section -->
-    <div class="section-header">
-        <div class="section-title-sub title-quit">QUIT (Breaking)</div>
-    </div>
-    <div class="grid-container" id="quitContainer"></div>
+    <section aria-labelledby="quitHeading">
+        <div class="section-header">
+            <h2 class="section-title-sub title-quit" id="quitHeading">QUIT (Breaking)</h2>
+        </div>
+        <div class="grid-container" id="quitContainer"></div>
+    </section>
 
-    <!-- Floating Dock -->
-    <div class="nav-dock">
-        <div class="dock-tab active">
-            <span class="dock-icon">🏠</span>
+    <nav class="nav-dock" aria-label="Main navigation">
+        <div class="dock-tab active" aria-current="page">
+            <span class="dock-icon" aria-hidden="true">🏠</span>
             <span>Dashboard</span>
         </div>
-        <div class="dock-tab">
-            <span class="dock-icon">🎛️</span>
-            <span>Habits</span>
-        </div>
-        <div class="dock-tab">
-            <span class="dock-icon">📊</span>
-            <span>Stats</span>
-        </div>
-        <div class="dock-tab">
-            <span class="dock-icon">⚙️</span>
-            <span>Settings</span>
-        </div>
-    </div>
+    </nav>
 
     <script>
-        // Cleared preset habits; starts with whatever you save or an empty list
-        let habits = JSON.parse(localStorage.getItem('cyber_habits_custom')) || [];
-        const todayStr = new Date().toISOString().split('T')[0];
+        const STORAGE_KEY = 'cyber_habits_custom';
+        const todayStr = localDateString(new Date());
+        let habits = loadHabits();
+
+        function localDateString(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function loadHabits() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+                if (!Array.isArray(saved)) {
+                    console.error('Saved habit data is not a list.');
+                    return [];
+                }
+
+                return saved
+                    .filter(item => item && typeof item === 'object')
+                    .map((item, index) => ({
+                        id: String(item.id || `habit-${index}`),
+                        title: String(item.title || '').trim().slice(0, 60),
+                        type: item.type === 'quit' ? 'quit' : 'start',
+                        icon: typeof item.icon === 'string' ? item.icon : (item.type === 'quit' ? '🚫' : '⚡'),
+                        completedDates: Array.isArray(item.completedDates)
+                            ? item.completedDates.filter(date => typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date))
+                            : []
+                    }))
+                    .filter(item => item.title);
+            } catch (error) {
+                console.error('Could not load saved habits:', error);
+                return [];
+            }
+        }
 
         function saveHabits() {
-            localStorage.setItem('cyber_habits_custom', JSON.stringify(habits));
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(habits));
+            } catch (error) {
+                console.error('Could not save habits:', error);
+                alert('Your changes could not be saved in this browser.');
+            }
             render();
         }
 
-        function addHabit() {
-            const input = document.getElementById('habitInput');
-            const type = document.getElementById('habitType').value;
-            const title = input.value.trim().toUpperCase();
+        function getStreak(habit) {
+            const dates = new Set(habit.completedDates);
+            const date = new Date();
+            if (!dates.has(localDateString(date))) date.setDate(date.getDate() - 1);
 
-            if (!title) return;
+            let streak = 0;
+            while (dates.has(localDateString(date))) {
+                streak += 1;
+                date.setDate(date.getDate() - 1);
+            }
+            return streak;
+        }
 
-            habits.push({
-                id: Date.now().toString(),
-                title: title,
-                icon: type === 'start' ? '⚡' : '🚫',
-                type: type,
-                streak: 0,
-                completedDates: []
+        function createHabitCard(habit) {
+            const isDone = habit.completedDates.includes(todayStr);
+            const card = document.createElement('article');
+            card.className = `habit-card ${habit.type === 'quit' ? 'card-quit' : `card-start${isDone ? ' done' : ''}`}`;
+
+            const header = document.createElement('div');
+            header.className = 'card-header';
+            const title = document.createElement('span');
+            title.className = 'card-title';
+            title.textContent = habit.title;
+            const icon = document.createElement('span');
+            icon.className = 'card-icon';
+            icon.setAttribute('aria-hidden', 'true');
+            icon.textContent = habit.icon;
+            header.append(title, icon);
+
+            const footer = document.createElement('div');
+            footer.className = 'card-footer';
+            const streak = document.createElement('span');
+            streak.textContent = `🔥 ${getStreak(habit)} day streak`;
+
+            const actions = document.createElement('span');
+            const track = document.createElement('button');
+            track.className = isDone
+                ? (habit.type === 'quit' ? 'btn-quit-done' : 'btn-done')
+                : 'btn-track';
+            track.type = 'button';
+            track.textContent = isDone ? 'DONE ✓' : 'TRACK';
+            track.setAttribute('aria-label', `${isDone ? 'Unmark' : 'Mark'} ${habit.title} ${habit.type === 'quit' ? 'avoided' : 'complete'} today`);
+            track.addEventListener('click', () => toggleHabit(habit.id));
+
+            const remove = document.createElement('button');
+            remove.className = 'btn-del';
+            remove.type = 'button';
+            remove.textContent = '×';
+            remove.setAttribute('aria-label', `Delete ${habit.title}`);
+            remove.addEventListener('click', () => deleteHabit(habit.id));
+
+            actions.append(track, remove);
+            footer.append(streak, actions);
+            card.append(header, footer);
+            return card;
+        }
+
+        function renderGroup(container, group) {
+            container.replaceChildren();
+            if (group.length === 0) {
+                const message = document.createElement('p');
+                message.className = 'empty-msg';
+                message.textContent = 'No habits here yet.';
+                container.append(message);
+                return;
+            }
+            group.forEach(habit => container.append(createHabitCard(habit)));
+        }
+
+        function updateDashboard() {
+            const completedToday = habits.filter(habit => habit.completedDates.includes(todayStr)).length;
+            const percent = habits.length ? Math.round((completedToday / habits.length) * 100) : 0;
+            document.getElementById('ringPercent').textContent = `${percent}%`;
+            document.getElementById('ringProgress').style.strokeDashoffset = String(264 - (264 * percent / 100));
+
+            const days = [];
+            const completionByDay = [];
+            for (let daysAgo = 6; daysAgo >= 0; daysAgo -= 1) {
+                const date = new Date();
+                date.setDate(date.getDate() - daysAgo);
+                const dateString = localDateString(date);
+                days.push(date.toLocaleDateString(undefined, { weekday: 'short' }).slice(0, 1));
+                const count = habits.filter(habit => habit.completedDates.includes(dateString)).length;
+                completionByDay.push(habits.length ? count / habits.length : 0);
+            }
+
+            document.getElementById('weekDays').replaceChildren(
+                ...days.map(day => {
+                    const label = document.createElement('span');
+                    label.textContent = day;
+                    return label;
+                })
+            );
+            const points = completionByDay.map((value, index) => {
+                const x = index * (140 / 6);
+                const y = 52 - value * 42;
+                return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
             });
+            document.getElementById('weekGraph').setAttribute('d', points.join(' '));
+        }
 
-            input.value = '';
-            saveHabits();
+        function render() {
+            renderGroup(document.getElementById('startContainer'), habits.filter(habit => habit.type === 'start'));
+            renderGroup(document.getElementById('quitContainer'), habits.filter(habit => habit.type === 'quit'));
+            updateDashboard();
         }
 
         function toggleHabit(id) {
-            const habit = habits.find(h => h.id === id);
+            const habit = habits.find(item => item.id === id);
             if (!habit) return;
-
-            const idx = habit.completedDates.indexOf(todayStr);
-            if (idx > -1) {
-                habit.completedDates.splice(idx, 1);
-                if (habit.streak > 0) habit.streak -= 1;
-            } else {
-                habit.completedDates.push(todayStr);
-                habit.streak += 1;
-            }
+            const index = habit.completedDates.indexOf(todayStr);
+            if (index >= 0) habit.completedDates.splice(index, 1);
+            else habit.completedDates.push(todayStr);
             saveHabits();
         }
 
         function deleteHabit(id) {
-            habits = habits.filter(h => h.id !== id);
+            habits = habits.filter(item => item.id !== id);
             saveHabits();
         }
 
-        function render() {
-            const startContainer = document.getElementById('startContainer');
-            const quitContainer = document.getElementById('quitContainer');
+        document.getElementById('addForm').addEventListener('submit', event => {
+            event.preventDefault();
+            const input = document.getElementById('habitInput');
+            const title = input.value.trim().slice(0, 60);
+            if (!title) return;
 
-            const completed = habits.filter(h => h.completedDates.includes(todayStr)).length;
-            const percent = habits.length > 0 ? Math.round((completed / habits.length) * 100) : 0;
-
-            document.getElementById('ringPercent').textContent = `${percent}%`;
-            const offset = 264 - (264 * percent) / 100;
-            document.getElementById('ringProgress').style.strokeDashoffset = offset;
-
-            startContainer.innerHTML = renderGridGroup(habits.filter(h => h.type === 'start'), 'No START habits added yet.');
-            quitContainer.innerHTML = renderGridGroup(habits.filter(h => h.type === 'quit'), 'No QUIT habits added yet.');
-        }
-
-        function renderGridGroup(group, emptyMsgText) {
-            if (group.length === 0) {
-                return `<div class="empty-msg">${emptyMsgText}</div>`;
-            }
-
-            return group.map(h => {
-                const isDone = h.completedDates.includes(todayStr);
-                const cardTheme = h.type === 'start' ? (isDone ? 'card-start done' : 'card-start') : 'card-quit';
-                const btnClass = isDone ? (h.type === 'start' ? 'btn-done' : 'btn-quit-done') : 'btn-track';
-                
-                return `
-                    <div class="habit-card ${cardTheme}">
-                        <div class="card-header">
-                            <span class="card-title">${h.title}</span>
-                            <span class="card-icon">${h.icon}</span>
-                        </div>
-                        <div class="card-footer">
-                            <span>Day ${h.streak || 0}</span>
-                            <div>
-                                <button class="${btnClass}" onclick="toggleHabit('${h.id}')">${isDone ? 'DONE ✓' : 'TRACK'}</button>
-                                <button class="btn-del" onclick="deleteHabit('${h.id}')">✕</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
+            const type = document.getElementById('habitType').value === 'quit' ? 'quit' : 'start';
+            habits.push({
+                id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+                title,
+                type,
+                icon: type === 'quit' ? '🚫' : '⚡',
+                completedDates: []
+            });
+            input.value = '';
+            saveHabits();
+            input.focus();
+        });
 
         render();
     </script>
