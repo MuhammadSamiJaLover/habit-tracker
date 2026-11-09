@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Habit Tracker PWA</title>
+    <title>Cyber Habit Tracker PWA</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#050811">
     
     <style>
         :root {
-            --bg-black: #000000;
+            --bg-black: #050811;
             --card-cyan: #00f0ff;
-            --card-purple: #bd00ff;
+            --card-green: #00ff66;
             --card-pink: #ff007f;
-            --cyan-glow: rgba(0, 240, 255, 0.4);
-            --purple-glow: rgba(189, 0, 255, 0.4);
-            --pink-glow: rgba(255, 0, 127, 0.4);
+            --cyan-glow: rgba(0, 240, 255, 0.35);
+            --green-glow: rgba(0, 255, 102, 0.35);
+            --pink-glow: rgba(255, 0, 127, 0.35);
             --text-main: #ffffff;
-            --text-dim: #6c7a89;
+            --text-dim: #708090;
         }
 
         * {
@@ -33,57 +33,45 @@
 
         body {
             background-color: var(--bg-black);
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.08) 0%, transparent 60%);
             color: var(--text-main);
             min-height: 100vh;
-            padding: calc(env(safe-area-inset-top) + 15px) 16px 100px;
+            padding: calc(env(safe-area-inset-top) + 15px) 16px 110px;
             max-width: 440px;
             margin: 0 auto;
         }
 
-        /* Top Header Navigation */
-        .top-nav {
+        /* Top Status Bar */
+        .top-status {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .avatar-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            border: 2px solid var(--card-cyan);
-            box-shadow: 0 0 12px var(--cyan-glow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            background: rgba(0, 240, 255, 0.1);
-        }
-
-        .settings-btn {
-            font-size: 1.3rem;
+            font-size: 0.85rem;
             color: var(--text-dim);
-            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding: 0 4px;
         }
 
-        /* Dashboard Analytics Card */
-        .dashboard-card {
-            background: rgba(10, 15, 25, 0.8);
-            border: 2px solid var(--card-cyan);
+        /* Dashboard Analytics Header */
+        .dashboard-header {
+            background: rgba(10, 16, 28, 0.85);
+            border: 1.5px solid rgba(0, 240, 255, 0.4);
             border-radius: 24px;
-            padding: 20px;
+            padding: 18px;
             box-shadow: 0 0 20px var(--cyan-glow);
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
+            margin-bottom: 22px;
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 15px;
             align-items: center;
         }
 
-        .ring-container {
+        .ring-box {
             position: relative;
-            width: 95px;
-            height: 95px;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -97,461 +85,455 @@
 
         .ring-bg {
             fill: none;
-            stroke: rgba(255, 255, 255, 0.1);
-            stroke-width: 8;
+            stroke: rgba(255, 255, 255, 0.08);
+            stroke-width: 7;
         }
 
         .ring-progress {
             fill: none;
-            stroke: url(#ring-gradient);
-            stroke-width: 8;
-            stroke-dasharray: 251;
-            stroke-dashoffset: 60;
+            stroke: url(#cyan-green-grad);
+            stroke-width: 7;
+            stroke-dasharray: 264;
+            stroke-dashoffset: 264;
             stroke-linecap: round;
             transition: stroke-dashoffset 0.5s ease;
         }
 
-        .ring-text {
+        .ring-info {
             position: absolute;
-            font-size: 1.1rem;
-            font-weight: 800;
+            text-align: center;
         }
 
-        .charts-right {
+        .ring-percent {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--card-cyan);
+            text-shadow: 0 0 10px var(--card-cyan);
+        }
+
+        .ring-label {
+            font-size: 0.55rem;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        .graph-box {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            align-items: flex-end;
+            justify-content: space-between;
+            height: 100px;
         }
 
-        /* Neon Sparkline Graph */
-        .line-graph {
-            width: 120px;
-            height: 35px;
+        .line-svg {
+            width: 100%;
+            height: 60px;
         }
 
-        .line-graph path {
+        .line-svg path {
             fill: none;
-            stroke: url(#line-gradient);
-            stroke-width: 3;
-            filter: drop-shadow(0px 0px 4px rgba(189, 0, 255, 0.8));
+            stroke: var(--card-cyan);
+            stroke-width: 2.5;
+            filter: drop-shadow(0px 0px 6px var(--card-cyan));
         }
 
-        /* Neon Mini Bar Chart */
-        .bar-chart {
+        .week-days {
             display: flex;
-            align-items: flex-end;
-            gap: 6px;
-            height: 30px;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            font-weight: 700;
         }
 
-        .bar {
-            width: 8px;
-            border-radius: 4px;
-            background: linear-gradient(180deg, var(--card-cyan), var(--card-purple));
-            box-shadow: 0 0 8px var(--cyan-glow);
+        /* Section Titles */
+        .section-header {
+            margin-bottom: 12px;
         }
 
-        /* Habit Input Form */
-        .add-form {
+        .section-title-main {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .section-title-sub {
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        .title-start { color: var(--card-cyan); }
+        .title-quit { color: var(--card-pink); }
+
+        /* Grid Containers */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .empty-msg {
+            grid-column: span 2;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            padding: 15px 0;
+        }
+
+        /* Habit Cards */
+        .habit-card {
+            background: rgba(10, 16, 28, 0.8);
+            border-radius: 18px;
+            padding: 14px;
             display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             gap: 10px;
-            margin-bottom: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .card-start {
+            border: 1.5px solid var(--card-cyan);
+            box-shadow: 0 0 14px var(--cyan-glow);
+        }
+
+        .card-start.done {
+            border-color: var(--card-green);
+            box-shadow: 0 0 14px var(--green-glow);
+        }
+
+        .card-quit {
+            border: 1.5px solid var(--card-pink);
+            box-shadow: 0 0 14px var(--pink-glow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .card-icon {
+            font-size: 0.95rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            font-weight: 700;
+        }
+
+        /* Action Buttons */
+        .btn-track {
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid var(--card-cyan);
+            color: var(--card-cyan);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-done {
+            background: rgba(0, 255, 102, 0.15);
+            border: 1px solid var(--card-green);
+            color: var(--card-green);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .btn-quit-done {
+            background: rgba(255, 0, 127, 0.15);
+            border: 1px solid var(--card-pink);
+            color: var(--card-pink);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .btn-del {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding-left: 6px;
+        }
+
+        /* Input Form */
+        .add-form {
+            background: rgba(10, 16, 28, 0.8);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 18px;
+            padding: 12px;
+            margin-bottom: 22px;
+            display: flex;
+            gap: 8px;
         }
 
         .add-input {
             flex: 1;
-            background: rgba(15, 20, 30, 0.8);
-            border: 1px solid rgba(0, 240, 255, 0.3);
+            background: rgba(5, 8, 17, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #fff;
-            padding: 12px 16px;
-            border-radius: 16px;
-            font-size: 0.9rem;
+            padding: 10px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .add-select {
+            background: rgba(5, 8, 17, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 10px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
             outline: none;
         }
 
         .add-btn {
-            background: linear-gradient(135deg, var(--card-cyan), var(--card-purple));
-            color: #fff;
+            background: linear-gradient(135deg, var(--card-cyan), var(--card-green));
+            color: #000;
             border: none;
-            padding: 12px 18px;
-            border-radius: 16px;
-            font-weight: 800;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 0.8rem;
             cursor: pointer;
-            box-shadow: 0 0 12px var(--cyan-glow);
         }
 
-        /* Habit Cards List */
-        .habits-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .habit-card {
-            background: rgba(10, 15, 25, 0.8);
-            border-radius: 22px;
-            padding: 16px 18px;
+        /* Bottom Navbar Dock */
+        .nav-dock {
+            position: fixed;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 390px;
+            background: rgba(10, 16, 28, 0.9);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 26px;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: transform 0.2s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
         }
 
-        /* Specific Glow Colors matching the image */
-        .habit-card.cyan-glow {
-            border: 2px solid var(--card-cyan);
-            box-shadow: 0 0 16px var(--cyan-glow);
-        }
-
-        .habit-card.purple-glow {
-            border: 2px solid var(--card-purple);
-            box-shadow: 0 0 16px var(--purple-glow);
-        }
-
-        .habit-card.pink-glow {
-            border: 2px solid var(--card-pink);
-            box-shadow: 0 0 16px var(--pink-glow);
-        }
-
-        .habit-left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .icon-box {
-            width: 46px;
-            height: 46px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .cyan-glow .icon-box { border: 1px solid var(--card-cyan); color: var(--card-cyan); }
-        .purple-glow .icon-box { border: 1px solid var(--card-purple); color: var(--card-purple); }
-        .pink-glow .icon-box { border: 1px solid var(--card-pink); color: var(--card-pink); }
-
-        .habit-details {
+        .dock-tab {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-        }
-
-        .habit-name {
-            font-size: 1rem;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-dim);
+            font-size: 0.65rem;
             font-weight: 700;
-        }
-
-        /* Dots Row representing weekly progress */
-        .dots-row {
-            display: flex;
-            gap: 6px;
-        }
-
-        .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .dot.active-cyan { background: var(--card-cyan); box-shadow: 0 0 6px var(--card-cyan); }
-        .dot.active-purple { background: var(--card-purple); box-shadow: 0 0 6px var(--card-purple); }
-        .dot.active-pink { background: var(--card-pink); box-shadow: 0 0 6px var(--card-pink); }
-
-        .habit-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Glowing Checkmark Button */
-        .check-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 2px solid rgba(0, 240, 255, 0.3);
-            background: rgba(10, 15, 25, 0.8);
-            color: transparent;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        .check-btn.checked {
-            background: linear-gradient(135deg, var(--card-cyan), var(--card-purple));
-            border-color: var(--card-cyan);
-            color: #fff;
-            box-shadow: 0 0 14px var(--cyan-glow);
-        }
-
-        .delete-btn {
-            border: 0;
-            background: transparent;
-            color: var(--text-dim);
-            font-size: 1.2rem;
-            padding: 8px;
             cursor: pointer;
         }
 
-        .delete-btn:hover {
-            color: var(--card-pink);
+        .dock-tab.active {
+            color: var(--card-cyan);
         }
 
-        .empty-state {
-            color: var(--text-dim);
-            text-align: center;
-            padding: 32px 12px;
-        }
-
-        .dashboard-copy {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .dashboard-copy strong {
-            font-size: 1rem;
-        }
-
-        .dashboard-copy span {
-            color: var(--text-dim);
-            font-size: 0.8rem;
-        }
-
-        @media (max-width: 360px) {
-            .dashboard-card {
-                padding: 16px;
-            }
-
-            .ring-container {
-                width: 82px;
-                height: 82px;
-            }
-
-            .line-graph {
-                width: 90px;
-            }
+        .dock-icon {
+            font-size: 1.2rem;
         }
     </style>
 </head>
 <body>
-    <header class="top-nav">
-        <h1>Habits</h1>
-        <div class="avatar-btn" aria-hidden="true">✨</div>
-    </header>
 
-    <section class="dashboard-card" aria-label="Today's progress">
-        <div class="ring-container">
-            <svg class="ring-svg" viewBox="0 0 100 100" aria-hidden="true">
+    <!-- Header Grid Analytics -->
+    <div class="dashboard-header">
+        <div class="ring-box">
+            <svg class="ring-svg">
                 <defs>
-                    <linearGradient id="ring-gradient" x1="0" y1="0" x2="1" y2="1">
+                    <linearGradient id="cyan-green-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stop-color="#00f0ff" />
-                        <stop offset="100%" stop-color="#bd00ff" />
-                    </linearGradient>
-                    <linearGradient id="line-gradient" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stop-color="#00f0ff" />
-                        <stop offset="100%" stop-color="#bd00ff" />
+                        <stop offset="100%" stop-color="#00ff66" />
                     </linearGradient>
                 </defs>
-                <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
-                <circle class="ring-progress" id="progressRing" cx="50" cy="50" r="40"></circle>
+                <circle class="ring-bg" cx="55" cy="55" r="42" />
+                <circle class="ring-progress" id="ringProgress" cx="55" cy="55" r="42" />
             </svg>
-            <span class="ring-text" id="progressText">0%</span>
+            <div class="ring-info">
+                <div class="ring-percent" id="ringPercent">0%</div>
+                <div class="ring-label">COMPLETED<br>PULSE</div>
+            </div>
         </div>
-        <div class="dashboard-copy">
-            <strong id="dateText"></strong>
-            <span>Daily progress</span>
-        </div>
-        <div class="charts-right" aria-hidden="true">
-            <svg class="line-graph" viewBox="0 0 120 35">
-                <path id="trendLine" d="M2 28 L22 22 L42 25 L62 12 L82 18 L102 7 L118 10"></path>
+
+        <div class="graph-box">
+            <svg class="line-svg">
+                <path d="M0 40 Q 20 10, 40 30 T 70 15 T 100 25 T 130 5" />
             </svg>
-            <div class="bar-chart" id="weekBars"></div>
+            <div class="week-days">
+                <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+            </div>
         </div>
-    </section>
+    </div>
 
-    <form class="add-form" id="addForm">
-        <input class="add-input" id="habitInput" type="text" maxlength="80"
-            placeholder="Add a habit..." aria-label="New habit" required>
-        <button class="add-btn" type="submit">Add</button>
-    </form>
+    <!-- Add Habit Control -->
+    <div class="add-form">
+        <input type="text" id="habitInput" class="add-input" placeholder="New Habit Name" />
+        <select id="habitType" class="add-select">
+            <option value="start">START</option>
+            <option value="quit">QUIT</option>
+        </select>
+        <button class="add-btn" onclick="addHabit()">+ ADD</button>
+    </div>
 
-    <main class="habits-list" id="habitsList" aria-live="polite"></main>
+    <!-- START Section -->
+    <div class="section-header">
+        <div class="section-title-main">Active Habits</div>
+        <div class="section-title-sub title-start">START (Building)</div>
+    </div>
+    <div class="grid-container" id="startContainer"></div>
+
+    <!-- QUIT Section -->
+    <div class="section-header">
+        <div class="section-title-sub title-quit">QUIT (Breaking)</div>
+    </div>
+    <div class="grid-container" id="quitContainer"></div>
+
+    <!-- Floating Dock -->
+    <div class="nav-dock">
+        <div class="dock-tab active">
+            <span class="dock-icon">🏠</span>
+            <span>Dashboard</span>
+        </div>
+        <div class="dock-tab">
+            <span class="dock-icon">🎛️</span>
+            <span>Habits</span>
+        </div>
+        <div class="dock-tab">
+            <span class="dock-icon">📊</span>
+            <span>Stats</span>
+        </div>
+        <div class="dock-tab">
+            <span class="dock-icon">⚙️</span>
+            <span>Settings</span>
+        </div>
+    </div>
 
     <script>
-        const STORAGE_KEY = 'my_habits_v2';
-        const today = localDateString(new Date());
-        const habitsList = document.getElementById('habitsList');
-        let habits = loadHabits();
-
-        function localDateString(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-
-        function loadHabits() {
-            try {
-                const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-                if (!Array.isArray(saved)) return [];
-                return saved.filter(item => item && typeof item === 'object')
-                    .map((item, index) => ({
-                        id: String(item.id || `habit-${index}-${Date.now()}`),
-                        name: String(item.name || item.title || '').trim(),
-                        completedDates: Array.isArray(item.completedDates)
-                            ? item.completedDates.filter(date => typeof date === 'string')
-                            : [],
-                        color: ['cyan', 'purple', 'pink'].includes(item.color)
-                            ? item.color
-                            : (item.type === 'quit' ? 'pink' : ['cyan', 'purple', 'pink'][index % 3]),
-                        icon: typeof item.icon === 'string' ? item.icon : (item.type === 'quit' ? '✦' : '⚡')
-                    }))
-                    .filter(item => item.name);
-            } catch (error) {
-                console.error('Could not load saved habits:', error);
-                return [];
-            }
-        }
+        // Cleared preset habits; starts with whatever you save or an empty list
+        let habits = JSON.parse(localStorage.getItem('cyber_habits_custom')) || [];
+        const todayStr = new Date().toISOString().split('T')[0];
 
         function saveHabits() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(habits));
-            } catch (error) {
-                console.error('Could not save habits:', error);
-                alert('Your habits could not be saved in this browser.');
-            }
+            localStorage.setItem('cyber_habits_custom', JSON.stringify(habits));
             render();
         }
 
-        function render() {
-            habitsList.replaceChildren();
-            if (habits.length === 0) {
-                const empty = document.createElement('p');
-                empty.className = 'empty-state';
-                empty.textContent = 'No habits yet. Add one above to get started.';
-                habitsList.append(empty);
-            }
+        function addHabit() {
+            const input = document.getElementById('habitInput');
+            const type = document.getElementById('habitType').value;
+            const title = input.value.trim().toUpperCase();
 
-            habits.forEach(habit => {
-                const color = ['cyan', 'purple', 'pink'].includes(habit.color) ? habit.color : 'cyan';
-                const card = document.createElement('article');
-                card.className = `habit-card ${color}-glow`;
+            if (!title) return;
 
-                const left = document.createElement('div');
-                left.className = 'habit-left';
-                const icon = document.createElement('span');
-                icon.className = 'icon-box';
-                icon.setAttribute('aria-hidden', 'true');
-                icon.textContent = habit.icon;
-                const details = document.createElement('div');
-                details.className = 'habit-details';
-                const name = document.createElement('span');
-                name.className = 'habit-name';
-                name.textContent = habit.name;
-                const dots = document.createElement('div');
-                dots.className = 'dots-row';
-                dots.setAttribute('aria-label', 'Last seven days');
-
-                for (let daysAgo = 6; daysAgo >= 0; daysAgo -= 1) {
-                    const date = new Date();
-                    date.setDate(date.getDate() - daysAgo);
-                    const dot = document.createElement('span');
-                    dot.className = `dot${habit.completedDates.includes(localDateString(date)) ? ` active-${color}` : ''}`;
-                    dots.append(dot);
-                }
-
-                details.append(name, dots);
-                left.append(icon, details);
-
-                const right = document.createElement('div');
-                right.className = 'habit-right';
-                const isDone = habit.completedDates.includes(today);
-                const check = document.createElement('button');
-                check.className = `check-btn${isDone ? ' checked' : ''}`;
-                check.type = 'button';
-                check.textContent = isDone ? '✓' : '';
-                check.setAttribute('aria-label', `Mark ${habit.name} ${isDone ? 'incomplete' : 'complete'} today`);
-                check.addEventListener('click', () => toggleHabit(habit.id));
-
-                const remove = document.createElement('button');
-                remove.className = 'delete-btn';
-                remove.type = 'button';
-                remove.textContent = '×';
-                remove.setAttribute('aria-label', `Delete ${habit.name}`);
-                remove.addEventListener('click', () => deleteHabit(habit.id));
-
-                right.append(check, remove);
-                card.append(left, right);
-                habitsList.append(card);
+            habits.push({
+                id: Date.now().toString(),
+                title: title,
+                icon: type === 'start' ? '⚡' : '🚫',
+                type: type,
+                streak: 0,
+                completedDates: []
             });
 
-            updateDashboard();
-        }
-
-        function updateDashboard() {
-            const completed = habits.filter(habit => habit.completedDates.includes(today)).length;
-            const percentage = habits.length ? Math.round((completed / habits.length) * 100) : 0;
-            document.getElementById('progressText').textContent = `${percentage}%`;
-            document.getElementById('progressRing').style.strokeDashoffset = String(251 - (251 * percentage / 100));
-            document.getElementById('dateText').textContent = new Date().toLocaleDateString(undefined, {
-                weekday: 'short',
-                month: 'short',
-                day: 'numeric'
-            });
-
-            const bars = document.getElementById('weekBars');
-            bars.replaceChildren();
-            for (let daysAgo = 6; daysAgo >= 0; daysAgo -= 1) {
-                const date = new Date();
-                date.setDate(date.getDate() - daysAgo);
-                const dateString = localDateString(date);
-                const count = habits.filter(habit => habit.completedDates.includes(dateString)).length;
-                const bar = document.createElement('span');
-                bar.className = 'bar';
-                bar.style.height = `${Math.max(4, habits.length ? Math.round((count / habits.length) * 30) : 4)}px`;
-                bars.append(bar);
-            }
+            input.value = '';
+            saveHabits();
         }
 
         function toggleHabit(id) {
-            const habit = habits.find(item => item.id === id);
+            const habit = habits.find(h => h.id === id);
             if (!habit) return;
-            const index = habit.completedDates.indexOf(today);
-            if (index >= 0) habit.completedDates.splice(index, 1);
-            else habit.completedDates.push(today);
+
+            const idx = habit.completedDates.indexOf(todayStr);
+            if (idx > -1) {
+                habit.completedDates.splice(idx, 1);
+                if (habit.streak > 0) habit.streak -= 1;
+            } else {
+                habit.completedDates.push(todayStr);
+                habit.streak += 1;
+            }
             saveHabits();
         }
 
         function deleteHabit(id) {
-            habits = habits.filter(item => item.id !== id);
+            habits = habits.filter(h => h.id !== id);
             saveHabits();
         }
 
-        document.getElementById('addForm').addEventListener('submit', event => {
-            event.preventDefault();
-            const input = document.getElementById('habitInput');
-            const name = input.value.trim();
-            if (!name) return;
-            habits.push({
-                id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
-                name,
-                completedDates: [],
-                color: ['cyan', 'purple', 'pink'][habits.length % 3],
-                icon: '⚡'
-            });
-            input.value = '';
-            saveHabits();
-            input.focus();
-        });
+        function render() {
+            const startContainer = document.getElementById('startContainer');
+            const quitContainer = document.getElementById('quitContainer');
+
+            const completed = habits.filter(h => h.completedDates.includes(todayStr)).length;
+            const percent = habits.length > 0 ? Math.round((completed / habits.length) * 100) : 0;
+
+            document.getElementById('ringPercent').textContent = `${percent}%`;
+            const offset = 264 - (264 * percent) / 100;
+            document.getElementById('ringProgress').style.strokeDashoffset = offset;
+
+            startContainer.innerHTML = renderGridGroup(habits.filter(h => h.type === 'start'), 'No START habits added yet.');
+            quitContainer.innerHTML = renderGridGroup(habits.filter(h => h.type === 'quit'), 'No QUIT habits added yet.');
+        }
+
+        function renderGridGroup(group, emptyMsgText) {
+            if (group.length === 0) {
+                return `<div class="empty-msg">${emptyMsgText}</div>`;
+            }
+
+            return group.map(h => {
+                const isDone = h.completedDates.includes(todayStr);
+                const cardTheme = h.type === 'start' ? (isDone ? 'card-start done' : 'card-start') : 'card-quit';
+                const btnClass = isDone ? (h.type === 'start' ? 'btn-done' : 'btn-quit-done') : 'btn-track';
+                
+                return `
+                    <div class="habit-card ${cardTheme}">
+                        <div class="card-header">
+                            <span class="card-title">${h.title}</span>
+                            <span class="card-icon">${h.icon}</span>
+                        </div>
+                        <div class="card-footer">
+                            <span>Day ${h.streak || 0}</span>
+                            <div>
+                                <button class="${btnClass}" onclick="toggleHabit('${h.id}')">${isDone ? 'DONE ✓' : 'TRACK'}</button>
+                                <button class="btn-del" onclick="deleteHabit('${h.id}')">✕</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
 
         render();
     </script>
