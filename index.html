@@ -26,7 +26,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
         }
@@ -36,321 +36,98 @@
             background-image: radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.08) 0%, transparent 60%);
             color: var(--text-main);
             min-height: 100vh;
-            padding: calc(env(safe-area-inset-top) + 15px) 16px 110px;
+            padding: calc(env(safe-area-inset-top) + 10px) 12px 85px;
             max-width: 440px;
             margin: 0 auto;
         }
 
-        /* Dashboard Analytics Header */
+        /* View Navigation Tabs */
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+
+        /* Ultra-Compact Analytics Header */
         .dashboard-header {
             background: rgba(10, 16, 28, 0.85);
-            border: 1.5px solid rgba(0, 240, 255, 0.4);
-            border-radius: 24px;
-            padding: 18px;
-            box-shadow: 0 0 20px var(--cyan-glow);
-            margin-bottom: 22px;
-            display: grid;
-            grid-template-columns: 1.1fr 1fr;
-            gap: 15px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 14px;
+            padding: 10px 14px;
+            box-shadow: 0 0 10px var(--cyan-glow);
+            margin-bottom: 10px;
+            display: flex;
             align-items: center;
+            justify-content: space-between;
         }
 
         .ring-box {
             position: relative;
-            width: 110px;
-            height: 110px;
-            margin: 0 auto;
+            width: 55px;
+            height: 55px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .ring-svg {
-            transform: rotate(-90deg);
-            width: 100%;
-            height: 100%;
-        }
-
-        .ring-bg {
-            fill: none;
-            stroke: rgba(255, 255, 255, 0.08);
-            stroke-width: 7;
-        }
-
+        .ring-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+        .ring-bg { fill: none; stroke: rgba(255, 255, 255, 0.08); stroke-width: 6; }
         .ring-progress {
             fill: none;
             stroke: url(#cyan-green-grad);
-            stroke-width: 7;
-            stroke-dasharray: 264;
-            stroke-dashoffset: 264;
+            stroke-width: 6;
+            stroke-dasharray: 157;
+            stroke-dashoffset: 157;
             stroke-linecap: round;
-            transition: stroke-dashoffset 0.5s ease;
-        }
-
-        .ring-info {
-            position: absolute;
-            text-align: center;
+            transition: stroke-dashoffset 0.4s ease;
         }
 
         .ring-percent {
-            font-size: 1.4rem;
+            position: absolute;
+            font-size: 0.85rem;
             font-weight: 900;
             color: var(--card-cyan);
-            text-shadow: 0 0 10px var(--card-cyan);
         }
 
-        .ring-label {
-            font-size: 0.55rem;
-            color: var(--text-dim);
-            letter-spacing: 1px;
-            font-weight: 700;
-            margin-top: 2px;
-        }
-
-        .graph-box {
+        .header-right {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            height: 100px;
+            align-items: flex-end;
+            gap: 4px;
         }
 
-        .line-svg {
-            width: 100%;
-            height: 60px;
-        }
-
-        .line-svg path {
-            fill: none;
-            stroke: var(--card-cyan);
-            stroke-width: 2.5;
-            filter: drop-shadow(0px 0px 6px var(--card-cyan));
+        .header-label {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            font-weight: 800;
+            letter-spacing: 0.5px;
         }
 
         .week-days {
             display: flex;
-            justify-content: space-between;
-            font-size: 0.65rem;
+            gap: 6px;
+            font-size: 0.6rem;
             color: var(--text-dim);
-            font-weight: 700;
-        }
-
-        /* Section Titles */
-        .section-header {
-            margin-bottom: 12px;
-        }
-
-        .section-title-main {
-            font-size: 0.75rem;
             font-weight: 800;
-            letter-spacing: 1px;
-            color: var(--text-dim);
-            text-transform: uppercase;
         }
 
+        /* Section Sub-Headers */
         .section-title-sub {
-            font-size: 0.9rem;
-            font-weight: 800;
+            font-size: 0.7rem;
+            font-weight: 900;
             letter-spacing: 0.5px;
-            margin-top: 2px;
+            text-transform: uppercase;
+            margin: 8px 0 4px 2px;
         }
-
         .title-start { color: var(--card-cyan); }
         .title-quit { color: var(--card-pink); }
 
-        /* List Container for Full Cards */
-        .list-container {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            margin-bottom: 22px;
-        }
-
-        .empty-msg {
-            text-align: center;
-            color: var(--text-dim);
-            font-size: 0.8rem;
-            padding: 15px 0;
-        }
-
-        /* Habit Cards */
-        .habit-card {
-            background: rgba(10, 16, 28, 0.85);
-            border-radius: 20px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: all 0.2s ease;
-        }
-
-        .card-start {
-            border: 1.5px solid var(--card-cyan);
-            box-shadow: 0 0 12px var(--cyan-glow);
-        }
-
-        .card-start.done {
-            border-color: var(--card-green);
-            box-shadow: 0 0 14px var(--green-glow);
-        }
-
-        .card-start.failed {
-            border-color: var(--card-pink);
-            box-shadow: 0 0 14px var(--pink-glow);
-        }
-
-        .card-quit {
-            border: 1.5px solid var(--card-pink);
-            box-shadow: 0 0 12px var(--pink-glow);
-        }
-
-        .card-quit.done {
-            border-color: var(--card-green);
-            box-shadow: 0 0 14px var(--green-glow);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-title {
-            font-size: 0.9rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .card-icon {
-            font-size: 1rem;
-        }
-
-        .streak-info {
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            font-weight: 700;
-        }
-
-        /* 7-Day Interactive History Row */
-        .history-row {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            background: rgba(5, 8, 17, 0.6);
-            border-radius: 12px;
-            padding: 8px 10px;
-        }
-
-        .history-label {
-            font-size: 0.6rem;
-            color: var(--text-dim);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .history-pills {
-            display: flex;
-            justify-content: space-between;
-            gap: 4px;
-        }
-
-        .pill {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            padding: 6px 2px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 0.65rem;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-        .pill.pass {
-            background: rgba(0, 255, 102, 0.15);
-            border-color: var(--card-green);
-            color: var(--card-green);
-        }
-
-        .pill.fail {
-            background: rgba(255, 0, 127, 0.15);
-            border-color: var(--card-pink);
-            color: var(--card-pink);
-        }
-
-        .pill.today-highlight {
-            border-color: var(--card-cyan);
-        }
-
-        /* Action Row: PASS / FAIL / DELETE */
-        .card-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-            margin-top: 2px;
-        }
-
-        .btn-pass {
-            flex: 1;
-            background: rgba(0, 255, 102, 0.1);
-            border: 1px solid var(--card-green);
-            color: var(--card-green);
-            padding: 8px;
-            border-radius: 10px;
-            font-size: 0.72rem;
-            font-weight: 900;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-pass.active {
-            background: var(--card-green);
-            color: #000;
-            box-shadow: 0 0 10px var(--green-glow);
-        }
-
-        .btn-fail {
-            flex: 1;
-            background: rgba(255, 0, 127, 0.1);
-            border: 1px solid var(--card-pink);
-            color: var(--card-pink);
-            padding: 8px;
-            border-radius: 10px;
-            font-size: 0.72rem;
-            font-weight: 900;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-fail.active {
-            background: var(--card-pink);
-            color: #fff;
-            box-shadow: 0 0 10px var(--pink-glow);
-        }
-
-        .btn-del {
-            background: transparent;
-            border: none;
-            color: var(--text-dim);
-            font-size: 0.9rem;
-            cursor: pointer;
-            padding: 0 4px;
-        }
-
-        /* Input Form */
+        /* Add Form Bar */
         .add-form {
             background: rgba(10, 16, 28, 0.8);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            border-radius: 18px;
-            padding: 12px;
-            margin-bottom: 22px;
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 12px;
+            padding: 6px 8px;
+            margin-bottom: 10px;
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .add-input {
@@ -358,9 +135,9 @@
             background: rgba(5, 8, 17, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #fff;
-            padding: 10px 12px;
-            border-radius: 12px;
-            font-size: 0.85rem;
+            padding: 6px 8px;
+            border-radius: 8px;
+            font-size: 0.75rem;
             outline: none;
         }
 
@@ -368,9 +145,10 @@
             background: rgba(5, 8, 17, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #fff;
-            padding: 10px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            padding: 6px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 700;
             outline: none;
         }
 
@@ -378,135 +156,311 @@
             background: linear-gradient(135deg, var(--card-cyan), var(--card-green));
             color: #000;
             border: none;
-            padding: 10px 14px;
-            border-radius: 12px;
+            padding: 6px 10px;
+            border-radius: 8px;
             font-weight: 900;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             cursor: pointer;
         }
 
-        /* Floating Dock */
-        .nav-dock {
-            position: fixed;
-            bottom: 18px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 180px;
-            background: rgba(10, 16, 28, 0.9);
-            backdrop-filter: blur(18px);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            border-radius: 26px;
-            padding: 10px 20px;
+        /* Micro Habit Rows */
+        .list-container {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 10px;
         }
 
-        .dock-tab {
+        .empty-msg {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.7rem;
+            padding: 6px 0;
+        }
+
+        .habit-row {
+            background: rgba(10, 16, 28, 0.85);
+            border-radius: 10px;
+            padding: 6px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            min-height: 38px;
+        }
+
+        .row-start { border: 1px solid rgba(0, 240, 255, 0.25); }
+        .row-start.done { border-color: var(--card-green); box-shadow: 0 0 6px var(--green-glow); }
+        .row-start.failed { border-color: var(--card-pink); box-shadow: 0 0 6px var(--pink-glow); }
+
+        .row-quit { border: 1px solid rgba(255, 0, 127, 0.25); }
+        .row-quit.done { border-color: var(--card-green); box-shadow: 0 0 6px var(--green-glow); }
+
+        .habit-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-title {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .streak-pill-sm {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1px 5px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .compact-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-pass-sm {
+            background: rgba(0, 255, 102, 0.1);
+            border: 1px solid var(--card-green);
+            color: var(--card-green);
+            padding: 4px 7px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .btn-pass-sm.active {
+            background: var(--card-green);
+            color: #000;
+            box-shadow: 0 0 6px var(--green-glow);
+        }
+
+        .btn-fail-sm {
+            background: rgba(255, 0, 127, 0.1);
+            border: 1px solid var(--card-pink);
+            color: var(--card-pink);
+            padding: 4px 7px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .btn-fail-sm.active {
+            background: var(--card-pink);
+            color: #fff;
+            box-shadow: 0 0 6px var(--pink-glow);
+        }
+
+        .btn-del {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 0 2px;
+        }
+
+        /* TAB 2: CALENDAR VIEW */
+        .cal-card {
+            background: rgba(10, 16, 28, 0.85);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 14px;
+            padding: 12px;
+        }
+
+        .cal-select {
+            width: 100%;
+            background: rgba(5, 8, 17, 0.9);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            color: var(--card-cyan);
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            outline: none;
+            margin-bottom: 12px;
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            text-align: center;
+        }
+
+        .cal-day-name {
+            font-size: 0.6rem;
+            font-weight: 800;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+        }
+
+        .cal-cell {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 6px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            color: var(--card-cyan);
-            font-size: 0.7rem;
-            font-weight: 700;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 800;
             cursor: pointer;
         }
 
-        .dock-icon {
-            font-size: 1.2rem;
+        .cal-cell.pass {
+            background: rgba(0, 255, 102, 0.15);
+            border-color: var(--card-green);
+            color: var(--card-green);
         }
+
+        .cal-cell.fail {
+            background: rgba(255, 0, 127, 0.15);
+            border-color: var(--card-pink);
+            color: var(--card-pink);
+        }
+
+        .cal-cell.today {
+            border-color: var(--card-cyan);
+        }
+
+        .cal-legend {
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            margin-top: 10px;
+            font-weight: 700;
+        }
+
+        /* Floating Bottom Nav Dock */
+        .nav-dock {
+            position: fixed;
+            bottom: calc(env(safe-area-inset-bottom) + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            background: rgba(10, 16, 28, 0.92);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            border-radius: 20px;
+            padding: 6px 12px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9);
+        }
+
+        .dock-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            font-size: 0.6rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .dock-btn.active {
+            color: var(--card-cyan);
+        }
+
+        .dock-icon { font-size: 1rem; }
     </style>
 </head>
 <body>
 
-    <!-- Header Grid Analytics -->
-    <div class="dashboard-header">
-        <div class="ring-box">
-            <svg class="ring-svg">
-                <defs>
-                    <linearGradient id="cyan-green-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#00f0ff" />
-                        <stop offset="100%" stop-color="#00ff66" />
-                    </linearGradient>
-                </defs>
-                <circle class="ring-bg" cx="55" cy="55" r="42" />
-                <circle class="ring-progress" id="ringProgress" cx="55" cy="55" r="42" />
-            </svg>
-            <div class="ring-info">
+    <!-- TAB 1: DASHBOARD -->
+    <div id="dashboardView" class="view-section active">
+        <div class="dashboard-header">
+            <div class="ring-box">
+                <svg class="ring-svg">
+                    <defs>
+                        <linearGradient id="cyan-green-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#00f0ff" />
+                            <stop offset="100%" stop-color="#00ff66" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="ring-bg" cx="27.5" cy="27.5" r="25" />
+                    <circle class="ring-progress" id="ringProgress" cx="27.5" cy="27.5" r="25" />
+                </svg>
                 <div class="ring-percent" id="ringPercent">0%</div>
-                <div class="ring-label">COMPLETED<br>PULSE</div>
+            </div>
+
+            <div class="header-right">
+                <div class="header-label">DAILY PULSE</div>
+                <div class="week-days">
+                    <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+                </div>
             </div>
         </div>
 
-        <div class="graph-box">
-            <svg class="line-svg">
-                <path d="M0 40 Q 20 10, 40 30 T 70 15 T 100 25 T 130 5" />
-            </svg>
-            <div class="week-days">
-                <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
-            </div>
+        <div class="add-form">
+            <input type="text" id="habitInput" class="add-input" placeholder="New Habit Name" />
+            <select id="habitType" class="add-select">
+                <option value="start">START</option>
+                <option value="quit">QUIT</option>
+            </select>
+            <button class="add-btn" onclick="addHabit()">+ ADD</button>
         </div>
-    </div>
 
-    <!-- Add Habit Form -->
-    <div class="add-form">
-        <input type="text" id="habitInput" class="add-input" placeholder="New Habit Name" />
-        <select id="habitType" class="add-select">
-            <option value="start">START</option>
-            <option value="quit">QUIT</option>
-        </select>
-        <button class="add-btn" onclick="addHabit()">+ ADD</button>
-    </div>
-
-    <!-- START Section -->
-    <div class="section-header">
-        <div class="section-title-main">Active Habits</div>
         <div class="section-title-sub title-start">START (Building)</div>
-    </div>
-    <div class="list-container" id="startContainer"></div>
+        <div class="list-container" id="startContainer"></div>
 
-    <!-- QUIT Section -->
-    <div class="section-header">
         <div class="section-title-sub title-quit">QUIT (Breaking)</div>
+        <div class="list-container" id="quitContainer"></div>
     </div>
-    <div class="list-container" id="quitContainer"></div>
 
-    <!-- Floating Dock -->
+    <!-- TAB 2: CALENDAR LOG -->
+    <div id="calendarView" class="view-section">
+        <div class="cal-card">
+            <select id="calHabitSelect" class="cal-select" onchange="renderCalendar()"></select>
+
+            <div class="cal-grid" id="calGrid"></div>
+
+            <div class="cal-legend">
+                <span style="color: var(--card-green)">✓ PASS</span>
+                <span style="color: var(--card-pink)">✕ FAIL</span>
+                <span>[ ] UNTRACKED</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Dock Nav -->
     <div class="nav-dock">
-        <div class="dock-tab">
+        <button class="dock-btn active" id="btnDash" onclick="switchTab('dashboard')">
             <span class="dock-icon">🏠</span>
             <span>Dashboard</span>
-        </div>
+        </button>
+        <button class="dock-btn" id="btnCal" onclick="switchTab('calendar')">
+            <span class="dock-icon">📅</span>
+            <span>Calendar</span>
+        </button>
     </div>
 
     <script>
-        // Use active key to preserve existing habits
         let habits = JSON.parse(localStorage.getItem('cyber_habits_custom')) || [];
-        
-        function getISO(d) {
-            return d.toISOString().split('T')[0];
-        }
 
-        const today = new Date();
-        const todayStr = getISO(today);
+        function getISO(d) { return d.toISOString().split('T')[0]; }
+        const todayStr = getISO(new Date());
 
-        // Calculate last 7 days array (Monday through Sunday or trailing 7 days)
-        function getLast7Days() {
-            let days = [];
-            for (let i = 6; i >= 0; i--) {
-                let d = new Date();
-                d.setDate(today.getDate() - i);
-                days.push({
-                    dateStr: getISO(d),
-                    dayLabel: d.toLocaleDateString('en-US', { weekday: 'narrow' })
-                });
-            }
-            return days;
-        }
-
-        // Migration helper: Preserve old habits & existing streak numbers
         function sanitizeData() {
             habits.forEach(h => {
                 if (!h.completedDates) h.completedDates = [];
@@ -519,19 +473,18 @@
         function saveHabits() {
             localStorage.setItem('cyber_habits_custom', JSON.stringify(habits));
             render();
+            renderCalendar();
         }
 
         function addHabit() {
             const input = document.getElementById('habitInput');
             const type = document.getElementById('habitType').value;
             const title = input.value.trim().toUpperCase();
-
             if (!title) return;
 
             habits.push({
                 id: Date.now().toString(),
                 title: title,
-                icon: type === 'start' ? '⚡' : '🚫',
                 type: type,
                 streak: 0,
                 completedDates: [],
@@ -542,37 +495,43 @@
             saveHabits();
         }
 
-        function setStatus(id, targetDate, status) {
-            const habit = habits.find(h => h.id === id);
-            if (!habit) return;
+        function setStatus(id, dateStr, status) {
+            const h = habits.find(item => item.id === id);
+            if (!h) return;
 
-            const passIdx = habit.completedDates.indexOf(targetDate);
-            const failIdx = habit.failedDates.indexOf(targetDate);
+            const pIdx = h.completedDates.indexOf(dateStr);
+            const fIdx = h.failedDates.indexOf(dateStr);
 
             if (status === 'pass') {
-                if (passIdx > -1) {
-                    habit.completedDates.splice(passIdx, 1);
-                } else {
-                    habit.completedDates.push(targetDate);
-                    if (failIdx > -1) habit.failedDates.splice(failIdx, 1);
+                if (pIdx > -1) h.completedDates.splice(pIdx, 1);
+                else {
+                    h.completedDates.push(dateStr);
+                    if (fIdx > -1) h.failedDates.splice(fIdx, 1);
                 }
             } else if (status === 'fail') {
-                if (failIdx > -1) {
-                    habit.failedDates.splice(failIdx, 1);
-                } else {
-                    habit.failedDates.push(targetDate);
-                    if (passIdx > -1) habit.completedDates.splice(passIdx, 1);
+                if (fIdx > -1) h.failedDates.splice(fIdx, 1);
+                else {
+                    h.failedDates.push(dateStr);
+                    if (pIdx > -1) h.completedDates.splice(pIdx, 1);
                 }
             }
 
-            // Recalculate streak based on total passes
-            habit.streak = habit.completedDates.length;
+            h.streak = h.completedDates.length;
             saveHabits();
         }
 
         function deleteHabit(id) {
             habits = habits.filter(h => h.id !== id);
             saveHabits();
+        }
+
+        function switchTab(tab) {
+            document.getElementById('dashboardView').classList.toggle('active', tab === 'dashboard');
+            document.getElementById('calendarView').classList.toggle('active', tab === 'calendar');
+            document.getElementById('btnDash').classList.toggle('active', tab === 'dashboard');
+            document.getElementById('btnCal').classList.toggle('active', tab === 'calendar');
+
+            if (tab === 'calendar') populateCalSelect();
         }
 
         function render() {
@@ -583,78 +542,94 @@
             const percent = habits.length > 0 ? Math.round((completedToday / habits.length) * 100) : 0;
 
             document.getElementById('ringPercent').textContent = `${percent}%`;
-            const offset = 264 - (264 * percent) / 100;
+            const offset = 157 - (157 * percent) / 100;
             document.getElementById('ringProgress').style.strokeDashoffset = offset;
 
-            startContainer.innerHTML = renderGroup(habits.filter(h => h.type === 'start'), 'No START habits added yet.');
-            quitContainer.innerHTML = renderGroup(habits.filter(h => h.type === 'quit'), 'No QUIT habits added yet.');
+            startContainer.innerHTML = renderGroup(habits.filter(h => h.type === 'start'), 'No START habits added.');
+            quitContainer.innerHTML = renderGroup(habits.filter(h => h.type === 'quit'), 'No QUIT habits added.');
         }
 
         function renderGroup(group, emptyMsgText) {
-            if (group.length === 0) {
-                return `<div class="empty-msg">${emptyMsgText}</div>`;
-            }
-
-            const last7 = getLast7Days();
+            if (group.length === 0) return `<div class="empty-msg">${emptyMsgText}</div>`;
 
             return group.map(h => {
-                const isPassToday = h.completedDates.includes(todayStr);
-                const isFailToday = h.failedDates.includes(todayStr);
+                const isPass = h.completedDates.includes(todayStr);
+                const isFail = h.failedDates.includes(todayStr);
 
-                let cardState = '';
-                if (isPassToday) cardState = 'done';
-                else if (isFailToday) cardState = 'failed';
+                let stateClass = '';
+                if (isPass) stateClass = 'done';
+                else if (isFail) stateClass = 'failed';
 
-                const themeClass = h.type === 'start' ? `card-start ${cardState}` : `card-quit ${cardState}`;
-
-                const historyHtml = last7.map(day => {
-                    const isPass = h.completedDates.includes(day.dateStr);
-                    const isFail = h.failedDates.includes(day.dateStr);
-                    const isToday = day.dateStr === todayStr;
-
-                    let pillClass = 'pill';
-                    let icon = day.dayLabel;
-
-                    if (isPass) { pillClass += ' pass'; icon = '✓'; }
-                    else if (isFail) { pillClass += ' fail'; icon = '✕'; }
-                    if (isToday) pillClass += ' today-highlight';
-
-                    return `
-                        <div class="${pillClass}" onclick="setStatus('${h.id}', '${day.dateStr}', '${isPass ? 'pass' : 'fail'}')">
-                            <span>${day.dayLabel}</span>
-                            <span>${icon}</span>
-                        </div>
-                    `;
-                }).join('');
+                const theme = h.type === 'start' ? `row-start ${stateClass}` : `row-quit ${stateClass}`;
 
                 return `
-                    <div class="habit-card ${themeClass}">
-                        <div class="card-header">
+                    <div class="habit-row ${theme}">
+                        <div class="habit-info">
                             <span class="card-title">${h.title}</span>
-                            <span class="card-icon">${h.icon}</span>
+                            <span class="streak-pill-sm">🔥 ${h.streak || 0}</span>
                         </div>
-                        
-                        <div class="streak-info">
-                            🔥 ${h.streak || 0} day streak
-                        </div>
-
-                        <div class="history-row">
-                            <div class="history-label">7-Day Log (Tap past day to edit)</div>
-                            <div class="history-pills">${historyHtml}</div>
-                        </div>
-
-                        <div class="card-actions">
-                            <button class="btn-pass ${isPassToday ? 'active' : ''}" onclick="setStatus('${h.id}', '${todayStr}', 'pass')">
-                                ✓ PASS
-                            </button>
-                            <button class="btn-fail ${isFailToday ? 'active' : ''}" onclick="setStatus('${h.id}', '${todayStr}', 'fail')">
-                                ✕ FAIL
-                            </button>
+                        <div class="compact-actions">
+                            <button class="btn-pass-sm ${isPass ? 'active' : ''}" onclick="setStatus('${h.id}', '${todayStr}', 'pass')">✓ PASS</button>
+                            <button class="btn-fail-sm ${isFail ? 'active' : ''}" onclick="setStatus('${h.id}', '${todayStr}', 'fail')">✕ FAIL</button>
                             <button class="btn-del" onclick="deleteHabit('${h.id}')">✕</button>
                         </div>
                     </div>
                 `;
             }).join('');
+        }
+
+        function populateCalSelect() {
+            const select = document.getElementById('calHabitSelect');
+            if (habits.length === 0) {
+                select.innerHTML = '<option>No habits available</option>';
+                renderCalendar();
+                return;
+            }
+            select.innerHTML = habits.map(h => `<option value="${h.id}">${h.title} (${h.type.toUpperCase()})</option>`).join('');
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const calGrid = document.getElementById('calGrid');
+            const select = document.getElementById('calHabitSelect');
+            if (!select.value || habits.length === 0) {
+                calGrid.innerHTML = '<div style="grid-column: span 7; text-align:center; padding:15px; font-size:0.7rem; color:var(--text-dim)">Add a habit to view calendar history.</div>';
+                return;
+            }
+
+            const habit = habits.find(h => h.id === select.value);
+            if (!habit) return;
+
+            const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+            let html = days.map(d => `<div class="cal-day-name">${d}</div>`).join('');
+
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            for (let day = 1; day <= totalDays; day++) {
+                const dateObj = new Date(year, month, day);
+                const dStr = getISO(dateObj);
+                const isPass = habit.completedDates.includes(dStr);
+                const isFail = habit.failedDates.includes(dStr);
+                const isToday = dStr === todayStr;
+
+                let cellClass = 'cal-cell';
+                let mark = day;
+                if (isPass) { cellClass += ' pass'; mark = '✓'; }
+                else if (isFail) { cellClass += ' fail'; mark = '✕'; }
+                if (isToday) cellClass += ' today';
+
+                html += `
+                    <div class="${cellClass}" onclick="setStatus('${habit.id}', '${dStr}', '${isPass ? 'pass' : 'fail'}')">
+                        <span style="font-size:0.5rem; opacity:0.6">${day}</span>
+                        <span>${mark}</span>
+                    </div>
+                `;
+            }
+
+            calGrid.innerHTML = html;
         }
 
         render();
