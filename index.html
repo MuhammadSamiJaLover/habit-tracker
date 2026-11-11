@@ -41,11 +41,10 @@
             margin: 0 auto;
         }
 
-        /* View Navigation Tabs */
         .view-section { display: none; }
         .view-section.active { display: block; }
 
-        /* Ultra-Compact Analytics Header */
+        /* Dashboard Header */
         .dashboard-header {
             background: rgba(10, 16, 28, 0.85);
             border: 1px solid rgba(0, 240, 255, 0.3);
@@ -108,7 +107,6 @@
             font-weight: 800;
         }
 
-        /* Section Sub-Headers */
         .section-title-sub {
             font-size: 0.7rem;
             font-weight: 900;
@@ -119,7 +117,6 @@
         .title-start { color: var(--card-cyan); }
         .title-quit { color: var(--card-pink); }
 
-        /* Add Form Bar */
         .add-form {
             background: rgba(10, 16, 28, 0.8);
             border: 1px solid rgba(0, 240, 255, 0.25);
@@ -163,7 +160,6 @@
             cursor: pointer;
         }
 
-        /* Micro Habit Rows */
         .list-container {
             display: flex;
             flex-direction: column;
@@ -273,7 +269,7 @@
             padding: 0 2px;
         }
 
-        /* TAB 2: CALENDAR VIEW */
+        /* CALENDAR STYLES */
         .cal-card {
             background: rgba(10, 16, 28, 0.85);
             border: 1px solid rgba(0, 240, 255, 0.3);
@@ -297,12 +293,12 @@
         .cal-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
+            gap: 5px;
             text-align: center;
         }
 
         .cal-day-name {
-            font-size: 0.6rem;
+            font-size: 0.65rem;
             font-weight: 800;
             color: var(--text-dim);
             margin-bottom: 4px;
@@ -311,31 +307,45 @@
         .cal-cell {
             aspect-ratio: 1;
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            padding: 2px;
+        }
+
+        .cal-date-num {
             font-size: 0.65rem;
             font-weight: 800;
-            cursor: pointer;
+            color: var(--text-dim);
+            line-height: 1;
+        }
+
+        .cal-mark {
+            font-size: 0.75rem;
+            font-weight: 900;
+            margin-top: 2px;
+            line-height: 1;
         }
 
         .cal-cell.pass {
             background: rgba(0, 255, 102, 0.15);
             border-color: var(--card-green);
-            color: var(--card-green);
         }
+        .cal-cell.pass .cal-mark, .cal-cell.pass .cal-date-num { color: var(--card-green); }
 
         .cal-cell.fail {
             background: rgba(255, 0, 127, 0.15);
             border-color: var(--card-pink);
-            color: var(--card-pink);
         }
+        .cal-cell.fail .cal-mark, .cal-cell.fail .cal-date-num { color: var(--card-pink); }
 
         .cal-cell.today {
             border-color: var(--card-cyan);
+            box-shadow: 0 0 6px var(--cyan-glow);
         }
 
         .cal-legend {
@@ -343,11 +353,11 @@
             justify-content: space-around;
             font-size: 0.6rem;
             color: var(--text-dim);
-            margin-top: 10px;
+            margin-top: 12px;
             font-weight: 700;
         }
 
-        /* Floating Bottom Nav Dock */
+        /* Nav Dock */
         .nav-dock {
             position: fixed;
             bottom: calc(env(safe-area-inset-bottom) + 10px);
@@ -378,10 +388,7 @@
             cursor: pointer;
         }
 
-        .dock-btn.active {
-            color: var(--card-cyan);
-        }
-
+        .dock-btn.active { color: var(--card-cyan); }
         .dock-icon { font-size: 1rem; }
     </style>
 </head>
@@ -436,9 +443,8 @@
             <div class="cal-grid" id="calGrid"></div>
 
             <div class="cal-legend">
-                <span style="color: var(--card-green)">✓ PASS</span>
-                <span style="color: var(--card-pink)">✕ FAIL</span>
-                <span>[ ] UNTRACKED</span>
+                <span style="color: var(--card-green)">✓ PASS (Adds Streak)</span>
+                <span style="color: var(--card-pink)">✕ FAIL (Resets Streak)</span>
             </div>
         </div>
     </div>
@@ -495,6 +501,7 @@
             saveHabits();
         }
 
+        // Action helper for PASS vs FAIL button clicks
         function setStatus(id, dateStr, status) {
             const h = habits.find(item => item.id === id);
             if (!h) return;
@@ -514,6 +521,30 @@
                     h.failedDates.push(dateStr);
                     if (pIdx > -1) h.completedDates.splice(pIdx, 1);
                 }
+            }
+
+            h.streak = h.completedDates.length;
+            saveHabits();
+        }
+
+        // Calendar Tap Handler: Cycles Untracked -> PASS (✓) -> FAIL (✕) -> Untracked
+        function cycleCalendarDay(id, dateStr) {
+            const h = habits.find(item => item.id === id);
+            if (!h) return;
+
+            const isPass = h.completedDates.includes(dateStr);
+            const isFail = h.failedDates.includes(dateStr);
+
+            if (!isPass && !isFail) {
+                // Untracked -> PASS
+                h.completedDates.push(dateStr);
+            } else if (isPass) {
+                // PASS -> FAIL
+                h.completedDates.splice(h.completedDates.indexOf(dateStr), 1);
+                h.failedDates.push(dateStr);
+            } else if (isFail) {
+                // FAIL -> Untracked
+                h.failedDates.splice(h.failedDates.indexOf(dateStr), 1);
             }
 
             h.streak = h.completedDates.length;
@@ -616,15 +647,16 @@
                 const isToday = dStr === todayStr;
 
                 let cellClass = 'cal-cell';
-                let mark = day;
+                let mark = '';
+
                 if (isPass) { cellClass += ' pass'; mark = '✓'; }
                 else if (isFail) { cellClass += ' fail'; mark = '✕'; }
                 if (isToday) cellClass += ' today';
 
                 html += `
-                    <div class="${cellClass}" onclick="setStatus('${habit.id}', '${dStr}', '${isPass ? 'pass' : 'fail'}')">
-                        <span style="font-size:0.5rem; opacity:0.6">${day}</span>
-                        <span>${mark}</span>
+                    <div class="${cellClass}" onclick="cycleCalendarDay('${habit.id}', '${dStr}')">
+                        <span class="cal-date-num">${day}</span>
+                        <span class="cal-mark">${mark}</span>
                     </div>
                 `;
             }
