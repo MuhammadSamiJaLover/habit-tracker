@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Cyber Habit Tracker PWA</title>
-    
+
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0a0406">
@@ -36,7 +36,7 @@
             background-image: radial-gradient(circle at 50% 0%, rgba(255, 42, 85, 0.14) 0%, rgba(255, 214, 10, 0.05) 45%, transparent 70%);
             color: var(--text-main);
             min-height: 100vh;
-            padding: calc(env(safe-area-inset-top) + 10px) 12px 85px;
+            padding: calc(env(safe-area-inset-top) + 10px) 12px 90px;
             max-width: 440px;
             margin: 0 auto;
         }
@@ -253,7 +253,7 @@
         }
 
         .btn-fail-sm {
-            background: rgba(255, 42, 85, 0.1);
+            background: rgba(255, 42, 85, 0.12);
             border: 1px solid var(--card-red);
             color: var(--card-red);
             padding: 4px 7px;
@@ -280,44 +280,114 @@
 
         /* CALENDAR STYLES */
         .cal-card {
-            background: rgba(10, 16, 28, 0.85);
-            border: 1px solid rgba(255, 214, 10, 0.3);
+            background: rgba(22, 10, 14, 0.88);
+            border: 1px solid rgba(255, 214, 10, 0.35);
             border-radius: 14px;
             padding: 12px;
+            box-shadow: 0 0 12px var(--red-glow);
         }
 
         .cal-select {
             width: 100%;
-            background: rgba(5, 8, 17, 0.9);
-            border: 1px solid rgba(255, 214, 10, 0.3);
+            background: rgba(10, 4, 6, 0.95);
+            border: 1px solid rgba(255, 42, 85, 0.45);
             color: var(--card-yellow);
             padding: 8px;
             border-radius: 8px;
             font-size: 0.8rem;
             font-weight: 800;
             outline: none;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
-        .cal-grid {
+        .calendar-year-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            background: rgba(10, 4, 6, 0.6);
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 214, 10, 0.2);
+        }
+
+        .calendar-year-nav button {
+            background: rgba(255, 214, 10, 0.12);
+            border: 1px solid rgba(255, 214, 10, 0.35);
+            border-radius: 6px;
+            color: var(--card-yellow);
+            padding: 2px 10px;
+            font-size: 0.95rem;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .calendar-year-nav strong {
+            color: var(--card-yellow);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .cal-legend {
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .year-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .month-card {
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            background: rgba(10, 4, 6, 0.55);
+        }
+
+        .month-card.current-month {
+            border-color: rgba(255, 214, 10, 0.45);
+            box-shadow: 0 0 10px rgba(255, 214, 10, 0.12);
+        }
+
+        .month-title {
+            margin-bottom: 8px;
+            color: var(--card-yellow);
+            font-size: 0.75rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            text-align: center;
+        }
+
+        .month-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 4px;
             text-align: center;
         }
 
         .cal-day-name {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             font-weight: 800;
             color: var(--text-dim);
             margin-bottom: 4px;
+        }
+
+        .cal-empty {
+            aspect-ratio: 1;
         }
 
         .cal-cell {
             aspect-ratio: 1;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
+            border-radius: 7px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -334,7 +404,7 @@
         }
 
         .cal-mark {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 900;
             margin-top: 2px;
             line-height: 1;
@@ -347,23 +417,17 @@
         .cal-cell.pass .cal-mark, .cal-cell.pass .cal-date-num { color: var(--card-green); }
 
         .cal-cell.fail {
-            background: rgba(255, 42, 85, 0.15);
+            background: rgba(255, 42, 85, 0.18);
             border-color: var(--card-red);
         }
         .cal-cell.fail .cal-mark, .cal-cell.fail .cal-date-num { color: var(--card-red); }
 
         .cal-cell.today {
-            border-color: var(--card-yellow);
-            box-shadow: 0 0 6px var(--yellow-glow);
+            border: 1.5px solid var(--card-yellow);
+            box-shadow: 0 0 8px var(--yellow-glow);
         }
-
-        .cal-legend {
-            display: flex;
-            justify-content: space-around;
-            font-size: 0.6rem;
-            color: var(--text-dim);
-            margin-top: 12px;
-            font-weight: 700;
+        .cal-cell.today .cal-date-num {
+            color: var(--card-yellow);
         }
 
         /* Nav Dock */
@@ -373,15 +437,16 @@
             left: 50%;
             transform: translateX(-50%);
             width: 200px;
-            background: rgba(10, 16, 28, 0.92);
+            background: rgba(22, 10, 14, 0.94);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 214, 10, 0.35);
+            border: 1px solid rgba(255, 214, 10, 0.4);
             border-radius: 20px;
             padding: 6px 12px;
             display: flex;
             justify-content: space-around;
             align-items: center;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9);
+            z-index: 100;
         }
 
         .dock-btn {
@@ -397,7 +462,7 @@
             cursor: pointer;
         }
 
-        .dock-btn.active { color: var(--card-yellow); }
+        .dock-btn.active { color: var(--card-yellow); text-shadow: 0 0 6px var(--yellow-glow); }
         .dock-icon { font-size: 1rem; }
     </style>
 </head>
@@ -421,10 +486,8 @@
             </div>
 
             <div class="header-right">
-                <div class="header-label">DAILY PULSE</div>
-                <div class="week-days">
-                    <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
-                </div>
+                <div class="header-label" id="todayHeaderLabel">DAILY PULSE</div>
+                <div class="week-days" id="weekDays"></div>
             </div>
         </div>
 
@@ -448,13 +511,18 @@
     <div id="calendarView" class="view-section">
         <div class="cal-card">
             <select id="calHabitSelect" class="cal-select" onchange="renderCalendar()"></select>
-
-            <div class="cal-grid" id="calGrid"></div>
+            <div class="calendar-year-nav">
+                <button type="button" onclick="changeCalendarYear(-1)">‹</button>
+                <strong id="calendarYear"></strong>
+                <button type="button" onclick="changeCalendarYear(1)">›</button>
+            </div>
 
             <div class="cal-legend">
                 <span style="color: var(--card-green)">✓ PASS (Adds Streak)</span>
                 <span style="color: var(--card-red)">✕ FAIL (Resets Streak)</span>
             </div>
+
+            <div class="year-grid" id="calGrid"></div>
         </div>
     </div>
 
@@ -472,9 +540,14 @@
 
     <script>
         let habits = JSON.parse(localStorage.getItem('cyber_habits_custom')) || [];
+        let calendarYear = new Date().getFullYear();
 
-        function getISO(d) { return d.toISOString().split('T')[0]; }
-        const todayStr = getISO(new Date());
+        function getISO(d = new Date()) {
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
 
         function sanitizeData() {
             habits.forEach(h => {
@@ -510,24 +583,24 @@
             saveHabits();
         }
 
-        // Action helper for PASS vs FAIL button clicks
-        function setStatus(id, dateStr, status) {
+        function setStatusToday(id, status) {
+            const todayStr = getISO();
             const h = habits.find(item => item.id === id);
             if (!h) return;
 
-            const pIdx = h.completedDates.indexOf(dateStr);
-            const fIdx = h.failedDates.indexOf(dateStr);
+            const pIdx = h.completedDates.indexOf(todayStr);
+            const fIdx = h.failedDates.indexOf(todayStr);
 
             if (status === 'pass') {
                 if (pIdx > -1) h.completedDates.splice(pIdx, 1);
                 else {
-                    h.completedDates.push(dateStr);
+                    h.completedDates.push(todayStr);
                     if (fIdx > -1) h.failedDates.splice(fIdx, 1);
                 }
             } else if (status === 'fail') {
                 if (fIdx > -1) h.failedDates.splice(fIdx, 1);
                 else {
-                    h.failedDates.push(dateStr);
+                    h.failedDates.push(todayStr);
                     if (pIdx > -1) h.completedDates.splice(pIdx, 1);
                 }
             }
@@ -536,8 +609,8 @@
             saveHabits();
         }
 
-        // Calendar Tap Handler: Cycles Untracked -> PASS (✓) -> FAIL (✕) -> Untracked
         function cycleCalendarDay(id, dateStr) {
+            if (!id) return;
             const h = habits.find(item => item.id === id);
             if (!h) return;
 
@@ -545,14 +618,11 @@
             const isFail = h.failedDates.includes(dateStr);
 
             if (!isPass && !isFail) {
-                // Untracked -> PASS
                 h.completedDates.push(dateStr);
             } else if (isPass) {
-                // PASS -> FAIL
                 h.completedDates.splice(h.completedDates.indexOf(dateStr), 1);
                 h.failedDates.push(dateStr);
             } else if (isFail) {
-                // FAIL -> Untracked
                 h.failedDates.splice(h.failedDates.indexOf(dateStr), 1);
             }
 
@@ -571,12 +641,28 @@
             document.getElementById('btnDash').classList.toggle('active', tab === 'dashboard');
             document.getElementById('btnCal').classList.toggle('active', tab === 'calendar');
 
-            if (tab === 'calendar') populateCalSelect();
+            if (tab === 'calendar') {
+                populateCalSelect(true);
+            } else {
+                render();
+            }
         }
 
         function render() {
+            const now = new Date();
+            const todayStr = getISO(now);
             const startContainer = document.getElementById('startContainer');
             const quitContainer = document.getElementById('quitContainer');
+
+            document.getElementById('todayHeaderLabel').textContent = now.toLocaleDateString('en-US', {
+                weekday: 'short', month: 'short', day: 'numeric'
+            }).toUpperCase();
+
+            const mondayFirstToday = (now.getDay() + 6) % 7;
+            const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+            document.getElementById('weekDays').innerHTML = weekDays
+                .map((day, index) => `<span class="${index === mondayFirstToday ? 'today-day' : ''}">${day}</span>`)
+                .join('');
 
             const completedToday = habits.filter(h => h.completedDates.includes(todayStr)).length;
             const percent = habits.length > 0 ? Math.round((completedToday / habits.length) * 100) : 0;
@@ -591,6 +677,7 @@
 
         function renderGroup(group, emptyMsgText) {
             if (group.length === 0) return `<div class="empty-msg">${emptyMsgText}</div>`;
+            const todayStr = getISO();
 
             return group.map(h => {
                 const isPass = h.completedDates.includes(todayStr);
@@ -609,8 +696,8 @@
                             <span class="streak-pill-sm">🔥 ${h.streak || 0}</span>
                         </div>
                         <div class="compact-actions">
-                            <button class="btn-pass-sm ${isPass ? 'active' : ''}" onclick="setStatus('${h.id}', '${todayStr}', 'pass')">✓ PASS</button>
-                            <button class="btn-fail-sm ${isFail ? 'active' : ''}" onclick="setStatus('${h.id}', '${todayStr}', 'fail')">✕ FAIL</button>
+                            <button class="btn-pass-sm ${isPass ? 'active' : ''}" onclick="setStatusToday('${h.id}', 'pass')">✓ PASS</button>
+                            <button class="btn-fail-sm ${isFail ? 'active' : ''}" onclick="setStatusToday('${h.id}', 'fail')">✕ FAIL</button>
                             <button class="btn-del" onclick="deleteHabit('${h.id}')">✕</button>
                         </div>
                     </div>
@@ -618,60 +705,92 @@
             }).join('');
         }
 
-        function populateCalSelect() {
+        function populateCalSelect(scrollToCurrent = false) {
             const select = document.getElementById('calHabitSelect');
             if (habits.length === 0) {
-                select.innerHTML = '<option>No habits available</option>';
-                renderCalendar();
-                return;
+                select.innerHTML = '<option value="">Add a habit on Dashboard first</option>';
+            } else {
+                const currentVal = select.value;
+                select.innerHTML = habits.map(h => `<option value="${h.id}">${h.title} (${h.type.toUpperCase()})</option>`).join('');
+                if (currentVal && habits.some(h => h.id === currentVal)) {
+                    select.value = currentVal;
+                }
             }
-            select.innerHTML = habits.map(h => `<option value="${h.id}">${h.title} (${h.type.toUpperCase()})</option>`).join('');
-            renderCalendar();
+            renderCalendar(scrollToCurrent);
         }
 
-        function renderCalendar() {
+        function renderCalendar(scrollToCurrent = false) {
             const calGrid = document.getElementById('calGrid');
             const select = document.getElementById('calHabitSelect');
-            if (!select.value || habits.length === 0) {
-                calGrid.innerHTML = '<div style="grid-column: span 7; text-align:center; padding:15px; font-size:0.7rem; color:var(--text-dim)">Add a habit to view calendar history.</div>';
-                return;
-            }
+            document.getElementById('calendarYear').textContent = calendarYear;
 
-            const habit = habits.find(h => h.id === select.value);
-            if (!habit) return;
-
-            const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-            let html = days.map(d => `<div class="cal-day-name">${d}</div>`).join('');
-
+            const habit = habits.find(h => h.id === select.value) || null;
             const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth();
-            const totalDays = new Date(year, month + 1, 0).getDate();
+            const todayStr = getISO(now);
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
 
-            for (let day = 1; day <= totalDays; day++) {
-                const dateObj = new Date(year, month, day);
-                const dStr = getISO(dateObj);
-                const isPass = habit.completedDates.includes(dStr);
-                const isFail = habit.failedDates.includes(dStr);
-                const isToday = dStr === todayStr;
+            const weekdays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+            let html = '';
 
-                let cellClass = 'cal-cell';
-                let mark = '';
+            for (let month = 0; month < 12; month++) {
+                const firstDay = new Date(calendarYear, month, 1);
+                const monthName = firstDay.toLocaleString('en-US', { month: 'long' });
+                const offset = (firstDay.getDay() + 6) % 7;
+                const totalDays = new Date(calendarYear, month + 1, 0).getDate();
+                const isCurrentMonth = (calendarYear === currentYear && month === currentMonth);
 
-                if (isPass) { cellClass += ' pass'; mark = '✓'; }
-                else if (isFail) { cellClass += ' fail'; mark = '✕'; }
-                if (isToday) cellClass += ' today';
+                html += `<section class="month-card ${isCurrentMonth ? 'current-month' : ''}" id="month-${month}"><h3 class="month-title">${monthName} ${calendarYear}</h3><div class="month-grid">`;
+                html += weekdays.map(day => `<div class="cal-day-name">${day}</div>`).join('');
+                html += '<span class="cal-empty"></span>'.repeat(offset);
 
-                html += `
-                    <div class="${cellClass}" onclick="cycleCalendarDay('${habit.id}', '${dStr}')">
-                        <span class="cal-date-num">${day}</span>
-                        <span class="cal-mark">${mark}</span>
-                    </div>
-                `;
+                for (let day = 1; day <= totalDays; day++) {
+                    const dateStr = getISO(new Date(calendarYear, month, day));
+                    const isPass = habit ? habit.completedDates.includes(dateStr) : false;
+                    const isFail = habit ? habit.failedDates.includes(dateStr) : false;
+                    const isToday = dateStr === todayStr;
+
+                    let cellClass = 'cal-cell';
+                    let mark = '';
+
+                    if (isPass) { cellClass += ' pass'; mark = '✓'; }
+                    else if (isFail) { cellClass += ' fail'; mark = '✕'; }
+                    if (isToday) cellClass += ' today';
+
+                    const clickAttr = habit ? `onclick="cycleCalendarDay('${habit.id}', '${dateStr}')"` : '';
+
+                    html += `
+                        <div class="${cellClass}" ${clickAttr}>
+                            <span class="cal-date-num">${day}</span>
+                            <span class="cal-mark">${mark}</span>
+                        </div>
+                    `;
+                }
+
+                html += '</div></section>';
             }
 
             calGrid.innerHTML = html;
+
+            if (scrollToCurrent && calendarYear === currentYear) {
+                const target = document.getElementById(`month-${currentMonth}`);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
+
+        function changeCalendarYear(offset) {
+            calendarYear += offset;
+            renderCalendar(false);
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                render();
+                if (document.getElementById('calendarView').classList.contains('active')) {
+                    renderCalendar(false);
+                }
+            }
+        });
 
         render();
     </script>
