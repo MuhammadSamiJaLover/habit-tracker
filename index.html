@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Cyber Habit Tracker PWA</title>
-
+    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0a0406">
@@ -278,63 +278,91 @@
             padding: 0 2px;
         }
 
-        /* CALENDAR STYLES */
-        .cal-card {
-            background: rgba(22, 10, 14, 0.88);
-            border: 1px solid rgba(255, 214, 10, 0.35);
-            border-radius: 14px;
-            padding: 12px;
-            box-shadow: 0 0 12px var(--red-glow);
+        /* STICKY CALENDAR HEADER BAR */
+        .cal-sticky-bar {
+            position: sticky;
+            top: calc(env(safe-area-inset-top) + 4px);
+            z-index: 90;
+            background: rgba(22, 10, 14, 0.96);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 214, 10, 0.45);
+            border-radius: 12px;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85), 0 0 10px var(--red-glow);
+        }
+
+        .cal-switcher-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .habit-cycle-btn {
+            background: rgba(255, 214, 10, 0.15);
+            border: 1px solid rgba(255, 214, 10, 0.4);
+            color: var(--card-yellow);
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            cursor: pointer;
         }
 
         .cal-select {
-            width: 100%;
+            flex: 1;
             background: rgba(10, 4, 6, 0.95);
             border: 1px solid rgba(255, 42, 85, 0.45);
             color: var(--card-yellow);
-            padding: 8px;
+            padding: 7px 8px;
             border-radius: 8px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 800;
             outline: none;
-            margin-bottom: 10px;
+        }
+
+        .cal-sub-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.6rem;
+            font-weight: 800;
         }
 
         .calendar-year-nav {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            background: rgba(10, 4, 6, 0.6);
-            padding: 6px 10px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 214, 10, 0.2);
+            gap: 6px;
         }
 
         .calendar-year-nav button {
             background: rgba(255, 214, 10, 0.12);
             border: 1px solid rgba(255, 214, 10, 0.35);
-            border-radius: 6px;
+            border-radius: 5px;
             color: var(--card-yellow);
-            padding: 2px 10px;
-            font-size: 0.95rem;
+            padding: 1px 7px;
+            font-size: 0.8rem;
             font-weight: 900;
             cursor: pointer;
         }
 
         .calendar-year-nav strong {
             color: var(--card-yellow);
-            font-size: 0.85rem;
-            letter-spacing: 1px;
+            font-size: 0.72rem;
         }
 
         .cal-legend {
             display: flex;
-            justify-content: space-around;
-            font-size: 0.6rem;
-            color: var(--text-dim);
-            margin-bottom: 10px;
-            font-weight: 700;
+            gap: 8px;
+        }
+
+        /* CALENDAR GRID */
+        .cal-card {
+            background: rgba(22, 10, 14, 0.88);
+            border: 1px solid rgba(255, 214, 10, 0.25);
+            border-radius: 14px;
+            padding: 10px;
         }
 
         .year-grid {
@@ -348,6 +376,7 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 10px;
             background: rgba(10, 4, 6, 0.55);
+            scroll-margin-top: 95px;
         }
 
         .month-card.current-month {
@@ -509,19 +538,29 @@
 
     <!-- TAB 2: CALENDAR LOG -->
     <div id="calendarView" class="view-section">
+        <!-- Sticky Floating Habit & Year Bar -->
+        <div class="cal-sticky-bar">
+            <div class="cal-switcher-row">
+                <button type="button" class="habit-cycle-btn" onclick="cycleCalHabit(-1)">‹</button>
+                <select id="calHabitSelect" class="cal-select" onchange="renderCalendar(false)"></select>
+                <button type="button" class="habit-cycle-btn" onclick="cycleCalHabit(1)">›</button>
+            </div>
+
+            <div class="cal-sub-bar">
+                <div class="calendar-year-nav">
+                    <button type="button" onclick="changeCalendarYear(-1)">‹</button>
+                    <strong id="calendarYear"></strong>
+                    <button type="button" onclick="changeCalendarYear(1)">›</button>
+                </div>
+
+                <div class="cal-legend">
+                    <span style="color: var(--card-green)">✓ PASS</span>
+                    <span style="color: var(--card-red)">✕ FAIL</span>
+                </div>
+            </div>
+        </div>
+
         <div class="cal-card">
-            <select id="calHabitSelect" class="cal-select" onchange="renderCalendar()"></select>
-            <div class="calendar-year-nav">
-                <button type="button" onclick="changeCalendarYear(-1)">‹</button>
-                <strong id="calendarYear"></strong>
-                <button type="button" onclick="changeCalendarYear(1)">›</button>
-            </div>
-
-            <div class="cal-legend">
-                <span style="color: var(--card-green)">✓ PASS (Adds Streak)</span>
-                <span style="color: var(--card-red)">✕ FAIL (Resets Streak)</span>
-            </div>
-
             <div class="year-grid" id="calGrid"></div>
         </div>
     </div>
@@ -561,7 +600,7 @@
         function saveHabits() {
             localStorage.setItem('cyber_habits_custom', JSON.stringify(habits));
             render();
-            renderCalendar();
+            renderCalendar(false);
         }
 
         function addHabit() {
@@ -628,6 +667,15 @@
 
             h.streak = h.completedDates.length;
             saveHabits();
+        }
+
+        function cycleCalHabit(dir) {
+            if (habits.length <= 1) return;
+            const select = document.getElementById('calHabitSelect');
+            const idx = habits.findIndex(h => h.id === select.value);
+            const nextIdx = (idx + dir + habits.length) % habits.length;
+            select.value = habits[nextIdx].id;
+            renderCalendar(false);
         }
 
         function deleteHabit(id) {
@@ -711,7 +759,7 @@
                 select.innerHTML = '<option value="">Add a habit on Dashboard first</option>';
             } else {
                 const currentVal = select.value;
-                select.innerHTML = habits.map(h => `<option value="${h.id}">${h.title} (${h.type.toUpperCase()})</option>`).join('');
+                select.innerHTML = habits.map(h => `<option value="${h.id}">${h.title} (${h.type.toUpperCase()}) • 🔥 ${h.streak || 0}</option>`).join('');
                 if (currentVal && habits.some(h => h.id === currentVal)) {
                     select.value = currentVal;
                 }
@@ -723,6 +771,14 @@
             const calGrid = document.getElementById('calGrid');
             const select = document.getElementById('calHabitSelect');
             document.getElementById('calendarYear').textContent = calendarYear;
+
+            // Keep dropdown streak badge updated after tapping dates
+            if (habits.length > 0 && select.selectedIndex >= 0) {
+                const activeH = habits.find(h => h.id === select.value);
+                if (activeH) {
+                    select.options[select.selectedIndex].text = `${activeH.title} (${activeH.type.toUpperCase()}) • 🔥 ${activeH.streak || 0}`;
+                }
+            }
 
             const habit = habits.find(h => h.id === select.value) || null;
             const now = new Date();
@@ -774,7 +830,7 @@
 
             if (scrollToCurrent && calendarYear === currentYear) {
                 const target = document.getElementById(`month-${currentMonth}`);
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
 
