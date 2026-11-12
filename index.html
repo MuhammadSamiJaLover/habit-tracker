@@ -7,19 +7,19 @@
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#050811">
+    <meta name="theme-color" content="#0a0406">
     
     <style>
         :root {
-            --bg-black: #050811;
-            --card-cyan: #00f0ff;
+            --bg-black: #0a0406;
+            --card-yellow: #ffd60a;
+            --card-red: #ff2a55;
             --card-green: #00ff66;
-            --card-pink: #ff007f;
-            --cyan-glow: rgba(0, 240, 255, 0.35);
+            --yellow-glow: rgba(255, 214, 10, 0.35);
+            --red-glow: rgba(255, 42, 85, 0.35);
             --green-glow: rgba(0, 255, 102, 0.35);
-            --pink-glow: rgba(255, 0, 127, 0.35);
             --text-main: #ffffff;
-            --text-dim: #708090;
+            --text-dim: #8c7a7e;
         }
 
         * {
@@ -33,7 +33,7 @@
 
         body {
             background-color: var(--bg-black);
-            background-image: radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.08) 0%, transparent 60%);
+            background-image: radial-gradient(circle at 50% 0%, rgba(255, 42, 85, 0.14) 0%, rgba(255, 214, 10, 0.05) 45%, transparent 70%);
             color: var(--text-main);
             min-height: 100vh;
             padding: calc(env(safe-area-inset-top) + 10px) 12px 85px;
@@ -46,11 +46,11 @@
 
         /* Dashboard Header */
         .dashboard-header {
-            background: rgba(10, 16, 28, 0.85);
-            border: 1px solid rgba(0, 240, 255, 0.3);
+            background: rgba(22, 10, 14, 0.88);
+            border: 1px solid rgba(255, 214, 10, 0.35);
             border-radius: 14px;
             padding: 10px 14px;
-            box-shadow: 0 0 10px var(--cyan-glow);
+            box-shadow: 0 0 12px var(--red-glow);
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -70,7 +70,7 @@
         .ring-bg { fill: none; stroke: rgba(255, 255, 255, 0.08); stroke-width: 6; }
         .ring-progress {
             fill: none;
-            stroke: url(#cyan-green-grad);
+            stroke: url(#red-yellow-grad);
             stroke-width: 6;
             stroke-dasharray: 157;
             stroke-dashoffset: 157;
@@ -82,7 +82,8 @@
             position: absolute;
             font-size: 0.85rem;
             font-weight: 900;
-            color: var(--card-cyan);
+            color: var(--card-yellow);
+            text-shadow: 0 0 8px var(--yellow-glow);
         }
 
         .header-right {
@@ -94,17 +95,25 @@
 
         .header-label {
             font-size: 0.6rem;
-            color: var(--text-dim);
+            color: var(--card-yellow);
             font-weight: 800;
             letter-spacing: 0.5px;
         }
 
         .week-days {
             display: flex;
-            gap: 6px;
+            gap: 5px;
             font-size: 0.6rem;
             color: var(--text-dim);
             font-weight: 800;
+        }
+
+        .week-days span.today-day {
+            color: var(--card-yellow);
+            background: rgba(255, 214, 10, 0.15);
+            border: 1px solid var(--card-yellow);
+            padding: 0 4px;
+            border-radius: 4px;
         }
 
         .section-title-sub {
@@ -114,12 +123,12 @@
             text-transform: uppercase;
             margin: 8px 0 4px 2px;
         }
-        .title-start { color: var(--card-cyan); }
-        .title-quit { color: var(--card-pink); }
+        .title-start { color: var(--card-yellow); text-shadow: 0 0 6px var(--yellow-glow); }
+        .title-quit { color: var(--card-red); text-shadow: 0 0 6px var(--red-glow); }
 
         .add-form {
-            background: rgba(10, 16, 28, 0.8);
-            border: 1px solid rgba(0, 240, 255, 0.25);
+            background: rgba(22, 10, 14, 0.85);
+            border: 1px solid rgba(255, 42, 85, 0.35);
             border-radius: 12px;
             padding: 6px 8px;
             margin-bottom: 10px;
@@ -129,8 +138,8 @@
 
         .add-input {
             flex: 1;
-            background: rgba(5, 8, 17, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 4, 6, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             color: #fff;
             padding: 6px 8px;
             border-radius: 8px;
@@ -139,18 +148,18 @@
         }
 
         .add-select {
-            background: rgba(5, 8, 17, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
+            background: rgba(10, 4, 6, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--card-yellow);
             padding: 6px;
             border-radius: 8px;
             font-size: 0.65rem;
-            font-weight: 700;
+            font-weight: 800;
             outline: none;
         }
 
         .add-btn {
-            background: linear-gradient(135deg, var(--card-cyan), var(--card-green));
+            background: linear-gradient(135deg, var(--card-yellow), var(--card-red));
             color: #000;
             border: none;
             padding: 6px 10px;
@@ -175,7 +184,7 @@
         }
 
         .habit-row {
-            background: rgba(10, 16, 28, 0.85);
+            background: rgba(22, 10, 14, 0.88);
             border-radius: 10px;
             padding: 6px 10px;
             display: flex;
@@ -185,11 +194,11 @@
             min-height: 38px;
         }
 
-        .row-start { border: 1px solid rgba(0, 240, 255, 0.25); }
+        .row-start { border: 1px solid rgba(255, 214, 10, 0.3); }
         .row-start.done { border-color: var(--card-green); box-shadow: 0 0 6px var(--green-glow); }
-        .row-start.failed { border-color: var(--card-pink); box-shadow: 0 0 6px var(--pink-glow); }
+        .row-start.failed { border-color: var(--card-red); box-shadow: 0 0 6px var(--red-glow); }
 
-        .row-quit { border: 1px solid rgba(255, 0, 127, 0.25); }
+        .row-quit { border: 1px solid rgba(255, 42, 85, 0.35); }
         .row-quit.done { border-color: var(--card-green); box-shadow: 0 0 6px var(--green-glow); }
 
         .habit-info {
@@ -212,9 +221,9 @@
 
         .streak-pill-sm {
             font-size: 0.6rem;
-            color: var(--text-dim);
-            font-weight: 700;
-            background: rgba(255, 255, 255, 0.05);
+            color: var(--card-yellow);
+            font-weight: 800;
+            background: rgba(255, 214, 10, 0.1);
             padding: 1px 5px;
             border-radius: 4px;
             white-space: nowrap;
@@ -244,9 +253,9 @@
         }
 
         .btn-fail-sm {
-            background: rgba(255, 0, 127, 0.1);
-            border: 1px solid var(--card-pink);
-            color: var(--card-pink);
+            background: rgba(255, 42, 85, 0.1);
+            border: 1px solid var(--card-red);
+            color: var(--card-red);
             padding: 4px 7px;
             border-radius: 6px;
             font-size: 0.65rem;
@@ -255,9 +264,9 @@
         }
 
         .btn-fail-sm.active {
-            background: var(--card-pink);
+            background: var(--card-red);
             color: #fff;
-            box-shadow: 0 0 6px var(--pink-glow);
+            box-shadow: 0 0 6px var(--red-glow);
         }
 
         .btn-del {
@@ -272,7 +281,7 @@
         /* CALENDAR STYLES */
         .cal-card {
             background: rgba(10, 16, 28, 0.85);
-            border: 1px solid rgba(0, 240, 255, 0.3);
+            border: 1px solid rgba(255, 214, 10, 0.3);
             border-radius: 14px;
             padding: 12px;
         }
@@ -280,8 +289,8 @@
         .cal-select {
             width: 100%;
             background: rgba(5, 8, 17, 0.9);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            color: var(--card-cyan);
+            border: 1px solid rgba(255, 214, 10, 0.3);
+            color: var(--card-yellow);
             padding: 8px;
             border-radius: 8px;
             font-size: 0.8rem;
@@ -338,14 +347,14 @@
         .cal-cell.pass .cal-mark, .cal-cell.pass .cal-date-num { color: var(--card-green); }
 
         .cal-cell.fail {
-            background: rgba(255, 0, 127, 0.15);
-            border-color: var(--card-pink);
+            background: rgba(255, 42, 85, 0.15);
+            border-color: var(--card-red);
         }
-        .cal-cell.fail .cal-mark, .cal-cell.fail .cal-date-num { color: var(--card-pink); }
+        .cal-cell.fail .cal-mark, .cal-cell.fail .cal-date-num { color: var(--card-red); }
 
         .cal-cell.today {
-            border-color: var(--card-cyan);
-            box-shadow: 0 0 6px var(--cyan-glow);
+            border-color: var(--card-yellow);
+            box-shadow: 0 0 6px var(--yellow-glow);
         }
 
         .cal-legend {
@@ -366,7 +375,7 @@
             width: 200px;
             background: rgba(10, 16, 28, 0.92);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(0, 240, 255, 0.35);
+            border: 1px solid rgba(255, 214, 10, 0.35);
             border-radius: 20px;
             padding: 6px 12px;
             display: flex;
@@ -388,7 +397,7 @@
             cursor: pointer;
         }
 
-        .dock-btn.active { color: var(--card-cyan); }
+        .dock-btn.active { color: var(--card-yellow); }
         .dock-icon { font-size: 1rem; }
     </style>
 </head>
@@ -400,9 +409,9 @@
             <div class="ring-box">
                 <svg class="ring-svg">
                     <defs>
-                        <linearGradient id="cyan-green-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#00f0ff" />
-                            <stop offset="100%" stop-color="#00ff66" />
+                        <linearGradient id="red-yellow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff2a55" />
+                            <stop offset="100%" stop-color="#ffd60a" />
                         </linearGradient>
                     </defs>
                     <circle class="ring-bg" cx="27.5" cy="27.5" r="25" />
@@ -444,7 +453,7 @@
 
             <div class="cal-legend">
                 <span style="color: var(--card-green)">✓ PASS (Adds Streak)</span>
-                <span style="color: var(--card-pink)">✕ FAIL (Resets Streak)</span>
+                <span style="color: var(--card-red)">✕ FAIL (Resets Streak)</span>
             </div>
         </div>
     </div>
